@@ -4,60 +4,64 @@ package com.dylanc.tracker
 
 import android.app.Activity
 import android.content.Intent
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
 import java.io.Serializable
 
-private const val KEY_TRACK_PARAMS = "track_params"
+internal const val KEY_TRACK_PARAMS = "track_params"
+private const val TAG = "Tracker"
+private var debug = false
+private var trackDispatcher: Array<out TrackDispatcher>? = null
 
-var trackDispatcher: TrackDispatcher? = null
+fun initTracker(debug: Boolean, vararg dispatcher: TrackDispatcher) {
+  com.dylanc.tracker.debug = debug
+  trackDispatcher = dispatcher
+}
 
-@Suppress("UNCHECKED_CAST")
-fun Activity.fillTrack(block: (TrackParams.() -> Unit)? = null) {
-  window.decorView.fillTrack {
-    val params = intent.getSerializableExtra(KEY_TRACK_PARAMS) as? Map<String, Any?>
-    params?.let { putAll(it) }
-    block?.invoke(this)
+var Activity.trackNode: TrackNode?
+  get() = window.decorView.trackNode
+  set(value) {
+    window.decorView.trackNode = value
   }
-}
 
-fun Fragment.fillTrack(block: TrackParams.() -> Unit) =
-  view?.fillTrack(block)
+var Fragment.trackNode: TrackNode?
+  get() = view?.trackNode
+  set(value) {
+    view?.trackNode = value
+  }
 
-fun RecyclerView.ViewHolder.fillTrack(block: TrackParams.() -> Unit) =
-  itemView.fillTrack(block)
-
-fun View.fillTrack(block: TrackParams.() -> Unit) {
-  trackNode = TrackNode(block)
-}
+var View.trackNode: TrackNode?
+  get() = getTag(R.id.tag_track_node) as? TrackNode
+  set(value) {
+    setTag(R.id.tag_track_node, value)
+  }
 
 fun Activity.postTrack(eventName: String) = window.decorView.postTrack(eventName)
 
 fun Fragment.postTrack(eventName: String) = view?.postTrack(eventName)
 
-fun RecyclerView.ViewHolder.postTrack(eventName: String) = itemView.postTrack(eventName)
-
 fun View.postTrack(eventId: String) {
-  trackDispatcher?.postTrack(eventId, collectTrack())
+  trackDispatcher?.forEach {
+    val params = collectTrack()
+    it.postTrack(eventId, params)
+    if (debug) Log.d(TAG, "eventId = $eventId, params = $params")
+  }
 }
 
-fun Intent.setTrack(activity: Activity) = setTrack(activity.window.decorView)
+fun Intent.putTrackNode(activity: Activity) = putTrackNode(activity.window.decorView)
 
-fun Intent.setTrack(fragment: Fragment) = setTrack(fragment.view)
+fun Intent.putTrackNode(fragment: Fragment) = putTrackNode(fragment.view)
 
-fun Intent.setTrack(viewHolder: RecyclerView.ViewHolder) = setTrack(viewHolder.itemView)
-
-fun Intent.setTrack(view: View?) = apply {
+fun Intent.putTrackNode(view: View?) =
   putExtra(KEY_TRACK_PARAMS, view?.collectTrack() as? Serializable)
-}
 
 fun View.collectTrack(): Map<String, Any?> {
   var view: View? = this
   val params = TrackParams()
   while (view != null) {
     val trackNode = view.trackNode
-    trackNode?.fillTackParams?.invoke(params)
+    trackNode?.apply { params.fillTackParams() }
     view = view.parent as? View
   }
   return params.toMap()

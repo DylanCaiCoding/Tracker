@@ -1,10 +1,10 @@
 package com.dylanc.tracker.sample.ui
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.dylanc.tracker.*
+import androidx.appcompat.app.AppCompatActivity
+import com.dylanc.tracker.TrackNode
 import com.dylanc.tracker.sample.databinding.ActivityMainBinding
+import com.dylanc.tracker.trackNode
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,11 +13,17 @@ class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(binding.root)
-    fillTrack { put("current_page" to "main") }
-    binding.card.fillTrack { put("group_id" to 1) }
-    binding.btnTest.fillTrack { put("device_id" to 2) }
+    trackNode = TrackNode {
+      put("page_name" to "main")
+    }
+    binding.card.trackNode = TrackNode {
+      put("group_id" to 1)
+    }
+    binding.btnTest.trackNode = TrackNode {
+      put("device_id" to 2)
+    }
     binding.btnTest.setOnClickListener {
-      startActivity(Intent(this, DetailsActivity::class.java).setTrack(it))
+      DetailsActivity.start(this, it)
     }
   }
 }
