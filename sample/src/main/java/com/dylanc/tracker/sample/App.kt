@@ -1,13 +1,24 @@
 package com.dylanc.tracker.sample
 
 import android.app.Application
+import android.content.Context
+import com.dylanc.tracker.TrackHandler
 import com.dylanc.tracker.initTracker
-import com.dylanc.tracker.sample.utils.UmengTrackDispatcher
+import com.umeng.analytics.MobclickAgent
+import com.umeng.commonsdk.UMConfigure
 
 class App : Application() {
 
   override fun onCreate() {
     super.onCreate()
-    initTracker(BuildConfig.DEBUG, UmengTrackDispatcher())
+    UMConfigure.setLogEnabled(BuildConfig.DEBUG)
+    UMConfigure.preInit(this, "626ca3f630a4f67780c223e6", "Umeng")
+    initTracker(this, UMTrackHandler())
+  }
+
+  class UMTrackHandler : TrackHandler {
+    override fun onEvent(context: Context, eventId: String, params: Map<String, Any?>) {
+      MobclickAgent.onEventObject(context, eventId, params)
+    }
   }
 }
