@@ -3,20 +3,19 @@
 package com.dylanc.tracker
 
 import android.app.Activity
+import android.app.Application
 import android.content.Intent
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import java.io.Serializable
 
 internal const val KEY_TRACK_PARAMS = "track_params"
-private const val TAG = "Tracker"
-private var debug = false
-private var trackDispatcher: Array<out TrackDispatcher>? = null
+private lateinit var application: Application
+private var trackHandler: TrackHandler? = null
 
-fun initTracker(debug: Boolean, vararg dispatcher: TrackDispatcher) {
-  com.dylanc.tracker.debug = debug
-  trackDispatcher = dispatcher
+fun initTracker(application: Application, handler: TrackHandler) {
+  com.dylanc.tracker.application = application
+  trackHandler = handler
 }
 
 var Activity.trackNode: TrackNode?
@@ -41,19 +40,14 @@ fun Activity.postTrack(eventName: String) = window.decorView.postTrack(eventName
 
 fun Fragment.postTrack(eventName: String) = view?.postTrack(eventName)
 
-fun View.postTrack(eventId: String) {
-  trackDispatcher?.forEach {
-    val params = collectTrack()
-    it.postTrack(eventId, params)
-    if (debug) Log.d(TAG, "eventId = $eventId, params = $params")
-  }
-}
+fun View.postTrack(eventId: String) =
+  trackHandler?.onEvent(application, eventId, collectTrack())
 
-fun Intent.putTrackNode(activity: Activity) = putTrackNode(activity.window.decorView)
+fun Intent.putTrack(activity: Activity): Intent = putTrack(activity.window.decorView)
 
-fun Intent.putTrackNode(fragment: Fragment) = putTrackNode(fragment.view)
+fun Intent.putTrack(fragment: Fragment): Intent = putTrack(fragment.view)
 
-fun Intent.putTrackNode(view: View?) =
+fun Intent.putTrack(view: View?): Intent =
   putExtra(KEY_TRACK_PARAMS, view?.collectTrack() as? Serializable)
 
 fun View.collectTrack(): Map<String, Any?> {
