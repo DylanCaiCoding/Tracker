@@ -1,3 +1,4 @@
+@file:JvmName("Tracker")
 @file:Suppress("unused")
 
 package com.dylanc.tracker
@@ -13,6 +14,7 @@ internal const val KEY_TRACK_PARAMS = "track_params"
 private lateinit var application: Application
 private var trackHandler: TrackHandler? = null
 
+@JvmName("init")
 fun initTracker(application: Application, handler: TrackHandler) {
   com.dylanc.tracker.application = application
   trackHandler = handler
@@ -40,23 +42,32 @@ fun Activity.postTrack(eventName: String) = window.decorView.postTrack(eventName
 
 fun Fragment.postTrack(eventName: String) = view?.postTrack(eventName)
 
-fun View.postTrack(eventId: String) =
-  trackHandler?.onEvent(application, eventId, collectTrack())
+fun View.postTrack(eventId: String) = trackHandler?.onEvent(application, eventId, collectTrack())
 
+@JvmName("putTrackToIntent")
 fun Intent.putTrack(activity: Activity): Intent = putTrack(activity.window.decorView)
 
+@JvmName("putTrackToIntent")
 fun Intent.putTrack(fragment: Fragment): Intent = putTrack(fragment.view)
 
-fun Intent.putTrack(view: View?): Intent =
-  putExtra(KEY_TRACK_PARAMS, view?.collectTrack() as? Serializable)
+@JvmName("putTrackToIntent")
+fun Intent.putTrack(view: View?): Intent = putExtra(KEY_TRACK_PARAMS, view?.collectTrack() as? Serializable)
 
-fun View.collectTrack(): Map<String, Any?> {
+fun Activity.setPageTrackNode(trackNode: TrackNode) = setPageTrackNode(emptyMap(), trackNode)
+
+@JvmOverloads
+fun Activity.setPageTrackNode(keyMap: Map<String, String> = emptyMap(), trackNode: TrackNode = TrackNode { }) {
+  this.trackNode = PageTrackNode(keyMap, trackNode)
+}
+
+fun View.collectTrack(): Map<String, Any> {
   var view: View? = this
   val params = TrackParams()
+  val nodeList = mutableListOf<TrackNode>()
   while (view != null) {
-    val trackNode = view.trackNode
-    trackNode?.apply { params.fillTackParams() }
+    view.trackNode?.let { nodeList.add(it) }
     view = view.parent as? View
   }
+  nodeList.reversed().forEach { it.apply { params.fillTackParams() } }
   return params.toMap()
 }
