@@ -15,5 +15,6 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Tracker"
-include ':sample'
+include ':sample-kotlin'
 include ':library'
+include ':sample-java'
