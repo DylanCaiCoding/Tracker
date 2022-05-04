@@ -1,15 +1,11 @@
 package com.dylanc.tracker.sample.ui
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.dylanc.tracker.PageTrackNode
-import com.dylanc.tracker.postTrack
-import com.dylanc.tracker.putTrack
+import com.dylanc.tracker.*
 import com.dylanc.tracker.sample.databinding.ActivityDetailsBinding
-import com.dylanc.tracker.trackNode
+import com.dylanc.tracker.sample.track.RecordThreadNode
 
 class DetailsActivity : AppCompatActivity() {
 
@@ -21,13 +17,7 @@ class DetailsActivity : AppCompatActivity() {
     trackNode = PageTrackNode(mapOf("page_name" to "from_page")) {
       putAll("page_name" to "details")
     }
-    postTrack("click_favorite")
-  }
-
-  companion object {
-    fun start(context: Context, view: View) {
-      val intent = Intent(context, DetailsActivity::class.java).putTrack(view)
-      context.startActivity(intent)
-    }
+    getTrackThreadNode<RecordThreadNode>()?.isRecord = true
+    postTrack("click_favorite", RecordThreadNode::class.java)
   }
 }

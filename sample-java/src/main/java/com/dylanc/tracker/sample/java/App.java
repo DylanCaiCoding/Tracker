@@ -3,6 +3,7 @@ package com.dylanc.tracker.sample.java;
 import android.app.Application;
 
 import com.dylanc.tracker.Tracker;
+import com.dylanc.tracker.sample.java.track.UMTrackHandler;
 
 /**
  * @author Dylan Cai

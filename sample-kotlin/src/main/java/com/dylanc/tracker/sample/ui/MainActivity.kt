@@ -1,10 +1,13 @@
 package com.dylanc.tracker.sample.ui
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.dylanc.tracker.TrackNode
+import com.dylanc.tracker.*
 import com.dylanc.tracker.sample.databinding.ActivityMainBinding
-import com.dylanc.tracker.trackNode
+import com.dylanc.tracker.sample.track.RecordThreadNode
 import com.umeng.analytics.MobclickAgent
 import com.umeng.commonsdk.UMConfigure
 
@@ -19,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     trackNode = TrackNode {
       put("page_name", "main")
     }
+    putTrackThreadNode(RecordThreadNode())
     binding.card.trackNode = TrackNode {
       put("group_id", 1)
     }
@@ -26,7 +30,7 @@ class MainActivity : AppCompatActivity() {
       put("device_id", 2)
     }
     binding.btnTest.setOnClickListener {
-      DetailsActivity.start(this, it)
+      startActivity(Intent(this, DetailsActivity::class.java).putTrack(it))
     }
   }
 

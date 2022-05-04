@@ -1,4 +1,4 @@
-package com.dylanc.tracker.sample.java;
+package com.dylanc.tracker.sample.java.ui;
 
 import android.os.Bundle;
 
@@ -6,6 +6,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dylanc.tracker.Tracker;
+import com.dylanc.tracker.sample.java.R;
+import com.dylanc.tracker.sample.java.track.RecordThreadNode;
 
 import java.util.HashMap;
 
@@ -22,10 +24,7 @@ public class MainActivity extends AppCompatActivity {
         params.put("key", "value")
             .put("key2", "value2")
     );
-    Tracker.setPageTrackNode(this);
-
-    Tracker.putTrackToIntent(getIntent(), this);
-
-    Tracker.postTrack(this, "test");
+    Tracker.putTrackThreadNode(this, new RecordThreadNode());
+    Tracker.postTrack(this, "test", RecordThreadNode.class);
   }
 }
