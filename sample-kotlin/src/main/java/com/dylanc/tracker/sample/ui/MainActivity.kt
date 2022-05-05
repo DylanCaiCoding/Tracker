@@ -1,13 +1,17 @@
 package com.dylanc.tracker.sample.ui
 
-import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.dylanc.tracker.*
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.dylanc.tracker.TrackNode
+import com.dylanc.tracker.sample.R
+import com.dylanc.tracker.sample.const.UM_CHANNEL
+import com.dylanc.tracker.sample.const.UM_APP_ID
 import com.dylanc.tracker.sample.databinding.ActivityMainBinding
-import com.dylanc.tracker.sample.track.RecordThreadNode
+import com.dylanc.tracker.sample.ui.fragment.HomeFragment
+import com.dylanc.tracker.sample.ui.fragment.MineFragment
+import com.dylanc.tracker.sample.ui.fragment.TheaterFragment
+import com.dylanc.tracker.trackNode
 import com.umeng.analytics.MobclickAgent
 import com.umeng.commonsdk.UMConfigure
 
@@ -18,19 +22,23 @@ class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(binding.root)
-    UMConfigure.init(this, "626ca3f630a4f67780c223e6", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, "")
+    UMConfigure.init(this, UM_APP_ID, UM_CHANNEL, UMConfigure.DEVICE_TYPE_PHONE, "")
     trackNode = TrackNode {
       put("page_name", "main")
     }
-    putTrackThreadNode(RecordThreadNode())
-    binding.card.trackNode = TrackNode {
-      put("group_id", 1)
+
+    val fragments = listOf(HomeFragment(), TheaterFragment(), MineFragment())
+    binding.viewPager2.adapter = object : FragmentStateAdapter(this) {
+      override fun getItemCount() = fragments.size
+      override fun createFragment(position: Int) = fragments[position]
     }
-    binding.btnTest.trackNode = TrackNode {
-      put("device_id", 2)
-    }
-    binding.btnTest.setOnClickListener {
-      startActivity(Intent(this, DetailsActivity::class.java).putTrack(it))
+    binding.bottomNavigation.setOnItemSelectedListener {
+      when (it.itemId) {
+        R.id.page_1 -> binding.viewPager2.currentItem = 0
+        R.id.page_2 -> binding.viewPager2.currentItem = 1
+        R.id.page_3 -> binding.viewPager2.currentItem = 2
+      }
+      true
     }
   }
 

@@ -3,7 +3,32 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  tools:context=".ui.DetailsActivity">
+  android:layout_height="match_parent">
 
+  <ImageView
+    android:id="@+id/imageView2"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:background="#999"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <TextView
+    android:id="@+id/tv_title"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="12dp"
+    android:text="TextView"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+  <ImageView
+    android:id="@+id/btn_favorite"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="16dp"
+    app:layout_constraintBottom_toBottomOf="@+id/tv_title"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/tv_title"
+    app:srcCompat="@drawable/ic_star_border" />
 </androidx.constraintlayout.widget.ConstraintLayout>

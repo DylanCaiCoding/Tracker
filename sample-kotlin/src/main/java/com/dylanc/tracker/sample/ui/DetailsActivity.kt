@@ -1,11 +1,14 @@
 package com.dylanc.tracker.sample.ui
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.dylanc.tracker.*
+import com.dylanc.tracker.PageTrackNode
+import com.dylanc.tracker.postTrack
+import com.dylanc.tracker.sample.bean.Video
+import com.dylanc.tracker.sample.const.referrerKeyMap
 import com.dylanc.tracker.sample.databinding.ActivityDetailsBinding
 import com.dylanc.tracker.sample.track.RecordThreadNode
+import com.dylanc.tracker.trackNode
 
 class DetailsActivity : AppCompatActivity() {
 
@@ -14,10 +17,15 @@ class DetailsActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(binding.root)
-    trackNode = PageTrackNode(mapOf("page_name" to "from_page")) {
+    title = "详情"
+    trackNode = PageTrackNode(referrerKeyMap) {
       putAll("page_name" to "details")
     }
-    getTrackThreadNode<RecordThreadNode>()?.isRecord = true
-    postTrack("click_favorite", RecordThreadNode::class.java)
+
+    val video = intent.getParcelableExtra<Video>("video")
+    binding.tvTitle.text = video?.title
+    binding.btnFavorite.setOnClickListener {
+      postTrack("click_favorite", RecordThreadNode::class.java)
+    }
   }
 }

@@ -31,6 +31,7 @@
 <!--                <data android:scheme="um.626ca3f630a4f67780c223e6" />-->
             </intent-filter>
         </activity>
+      <activity android:name=".ui.SeriesActivity" />
     </application>
 
 </manifest>
