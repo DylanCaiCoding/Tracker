@@ -16,9 +16,7 @@ class SeriesActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(binding.root)
-    trackNode = PageTrackNode(referrerKeyMap) {
-      put("page_name", "series")
-    }
+    trackNode = PageTrackNode(referrerKeyMap, "page_name" to "series")
 
     val video = intent.getParcelableExtra<Video>("video")!!
     title = video.seriesName

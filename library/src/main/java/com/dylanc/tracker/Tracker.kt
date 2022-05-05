@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import java.io.Serializable
-import kotlin.reflect.KClass
 
 internal const val KEY_TRACK_PARAMS = "track_params"
 internal const val KEY_TRACK_THREAD_NODES = "track_thread_nodes"
@@ -60,16 +59,16 @@ fun Intent.putTrack(fragment: Fragment): Intent = putTrack(fragment.view)
 
 @JvmName("putTrackToIntent")
 fun Intent.putTrack(view: View?): Intent = putExtra(KEY_TRACK_PARAMS, view?.collectTrack() as? Serializable)
-  .putExtra(KEY_TRACK_THREAD_NODES, view?.threadNodeClazz?.let { list -> Array(list.size) { list[it].name } })
+  .putExtra(KEY_TRACK_THREAD_NODES, view?.threadNodeClasses?.let { list -> Array(list.size) { list[it].name } })
 
 fun ComponentActivity.setPageTrackNode(trackNode: TrackNode) = setPageTrackNode(emptyMap(), trackNode)
 
 @JvmOverloads
-fun ComponentActivity.setPageTrackNode(keyMap: Map<String, String> = emptyMap(), trackNode: TrackNode = TrackNode { }) {
-  this.trackNode = PageTrackNode(keyMap, trackNode)
+fun ComponentActivity.setPageTrackNode(referrerKeyMap: Map<String, String> = emptyMap(), trackNode: TrackNode = TrackNode { }) {
+  this.trackNode = PageTrackNode(referrerKeyMap, trackNode)
 }
 
-fun View.collectTrack(vararg clazz: Class<*>): Map<String, String> {
+fun View.collectTrack(vararg classes: Class<*>): Map<String, String> {
   var view: View? = this
   val params = TrackParams()
   val nodeList = mutableListOf<TrackNode>()
@@ -77,9 +76,11 @@ fun View.collectTrack(vararg clazz: Class<*>): Map<String, String> {
     view.trackNode?.let { nodeList.add(it) }
     view = view.parent as? View
   }
-  nodeList.reversed().forEach { it.apply { params.fillTackParams() } }
-  if (clazz.isNotEmpty()) {
-    threadNodeClazz?.forEach { threadNodes[it]?.apply { params.fillTackParams() } }
+  nodeList.reversed().forEach { node -> node.fillTackParams(params) }
+  classes.forEach { clazz ->
+    if (threadNodeClasses?.any { it == clazz } == true) {
+      threadNodes[clazz]?.fillTackParams(params)
+    }
   }
   return params.toMap()
 }
@@ -109,7 +110,7 @@ fun <T : TrackNode> Fragment.getTrackThreadNode(clazz: Class<T>): T? = view?.get
 inline fun <reified T : TrackNode> View.getTrackThreadNode(): T? = getTrackThreadNode(T::class.java)
 
 fun <T : TrackNode> View.getTrackThreadNode(clazz: Class<T>): T? =
-  if (threadNodeClazz?.contains(clazz) == true) threadNodes[clazz] as? T else null
+  if (threadNodeClasses?.contains(clazz) == true) threadNodes[clazz] as? T else null
 
 internal var Activity.threadNodeClazz: MutableList<Class<*>>?
   get() = window.decorView.getTag(R.id.tag_track_thread) as? MutableList<Class<*>>
@@ -117,7 +118,7 @@ internal var Activity.threadNodeClazz: MutableList<Class<*>>?
     window.decorView.setTag(R.id.tag_track_thread, value)
   }
 
-private val View.threadNodeClazz: List<Class<*>>?
+private val View.threadNodeClasses: List<Class<*>>?
   get() {
     var view: View? = this
     while (view != null) {

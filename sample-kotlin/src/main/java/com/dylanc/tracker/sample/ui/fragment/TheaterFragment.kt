@@ -14,9 +14,7 @@ class TheaterFragment : Fragment(R.layout.fragment_theater) {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    trackNode = TrackNode {
-      put("tab_name", "theater")
-    }
+    trackNode = TrackNode("tab_name" to "theater")
 
     val binding = FragmentTheaterBinding.bind(view)
     val fragments = listOf(RecommendFragment(), MovieFragment())

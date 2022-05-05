@@ -7,7 +7,6 @@ import com.dylanc.tracker.postTrack
 import com.dylanc.tracker.sample.bean.Video
 import com.dylanc.tracker.sample.const.referrerKeyMap
 import com.dylanc.tracker.sample.databinding.ActivityDetailsBinding
-import com.dylanc.tracker.sample.track.RecordThreadNode
 import com.dylanc.tracker.trackNode
 
 class DetailsActivity : AppCompatActivity() {
@@ -18,14 +17,12 @@ class DetailsActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(binding.root)
     title = "详情"
-    trackNode = PageTrackNode(referrerKeyMap) {
-      putAll("page_name" to "details")
-    }
+    trackNode = PageTrackNode(referrerKeyMap, "page_name" to "details")
 
     val video = intent.getParcelableExtra<Video>("video")
     binding.tvTitle.text = video?.title
-    binding.btnFavorite.setOnClickListener {
-      postTrack("click_favorite", RecordThreadNode::class.java)
+    binding.btnFavorite.setOnClickListener { view ->
+      view.postTrack("click_favorite")
     }
   }
 }

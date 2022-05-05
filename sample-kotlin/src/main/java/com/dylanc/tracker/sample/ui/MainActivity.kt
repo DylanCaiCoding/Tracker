@@ -23,9 +23,7 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(binding.root)
     UMConfigure.init(this, UM_APP_ID, UM_CHANNEL, UMConfigure.DEVICE_TYPE_PHONE, "")
-    trackNode = TrackNode {
-      put("page_name", "main")
-    }
+    trackNode = TrackNode("page_name" to "main")
 
     val fragments = listOf(HomeFragment(), TheaterFragment(), MineFragment())
     binding.viewPager2.adapter = object : FragmentStateAdapter(this) {

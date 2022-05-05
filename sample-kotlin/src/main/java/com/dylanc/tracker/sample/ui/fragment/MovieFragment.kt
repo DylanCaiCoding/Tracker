@@ -15,9 +15,7 @@ class MovieFragment : Fragment(R.layout.layout_list) {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    trackNode = TrackNode {
-      put("channel_name", "movie")
-    }
+    trackNode = TrackNode("channel_name" to "movie")
 
     val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
     val adapter = VideoAdapter(requireActivity())

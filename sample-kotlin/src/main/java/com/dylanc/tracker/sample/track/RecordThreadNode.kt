@@ -10,7 +10,7 @@ import java.io.Serializable
 class RecordThreadNode : TrackNode, Serializable {
   var isRecord = false
 
-  override fun TrackParams.fillTackParams() {
-    put("is_record", isRecord)
+  override fun fillTackParams(params: TrackParams) {
+    params.put("is_record", isRecord)
   }
 }
