@@ -43,7 +43,7 @@ activity.startActivity(intent)
 trackNode = PageTrackNode("page_name" to "details")
 ```
 
-`PageTrackNode` 会将前面节点的所有参数添加进埋点中，添加的时候可以设置一些转换规则。比如上个页面的 `page_name`，跳转后上报 `from_page`。
+`PageTrackNode` 会将前面所有节点的参数添加进埋点中，添加的时候可以设置一些转换规则。比如上个页面的 `page_name`，跳转后上报 `from_page`。
 
 ```kotlin
 val referrerKeyMap = mapOf("page_name" to "from_page", "channel_name" to "from_channel_name")
