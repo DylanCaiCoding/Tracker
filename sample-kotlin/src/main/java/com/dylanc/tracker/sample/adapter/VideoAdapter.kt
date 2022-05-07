@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dylanc.tracker.TrackNode
 import com.dylanc.tracker.postTrack
-import com.dylanc.tracker.putTrack
+import com.dylanc.tracker.setReferrerTrackNode
 import com.dylanc.tracker.sample.bean.Video
 import com.dylanc.tracker.sample.databinding.ItemVideoBinding
 import com.dylanc.tracker.sample.ui.DetailsActivity
@@ -27,13 +27,13 @@ class VideoAdapter(private val activity: Activity) : ListAdapter<Video, VideoAda
         binding.tvSeriesName.setOnClickListener { view ->
           val intent = Intent(activity, SeriesActivity::class.java)
             .putExtra("video", getItem(adapterPosition))
-            .putTrack(view)
+            .setReferrerTrackNode(view)
           activity.startActivity(intent)
         }
         itemView.setOnClickListener { view ->
           val intent = Intent(activity, DetailsActivity::class.java)
             .putExtra("video", getItem(adapterPosition))
-            .putTrack(view)
+            .setReferrerTrackNode(view)
           activity.startActivity(intent)
         }
       }

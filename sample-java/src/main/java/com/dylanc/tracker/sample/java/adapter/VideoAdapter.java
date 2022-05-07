@@ -59,13 +59,13 @@ public class VideoAdapter extends ListAdapter<Video, VideoAdapter.ViewHolder> {
       binding.tvSeriesName.setOnClickListener(v -> {
         Intent intent = new Intent(activity, SeriesActivity.class)
             .putExtra("video", getItem(getAdapterPosition()));
-        Tracker.putTrackToIntent(intent, v);
+        Tracker.setReferrerTrackNode(intent, v);
         activity.startActivity(intent);
       });
       itemView.setOnClickListener(v -> {
         Intent intent = new Intent(activity, DetailsActivity.class)
             .putExtra("video", getItem(getAdapterPosition()));
-        Tracker.putTrackToIntent(intent, v);
+        Tracker.setReferrerTrackNode(intent, v);
         activity.startActivity(intent);
       });
     }

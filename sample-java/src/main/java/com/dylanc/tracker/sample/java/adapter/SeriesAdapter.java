@@ -35,7 +35,9 @@ public class SeriesAdapter extends ListAdapter<Video, SeriesAdapter.ViewHolder> 
 
   @Override
   public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-    holder.binding.tvTitle.setText(getItem(position).getTitle());
+    Video item = getItem(position);
+    Tracker.setTrackNode(holder.itemView, params -> params.put("video_id", item.getId()));
+    holder.binding.tvTitle.setText(item.getTitle());
   }
 
   public class ViewHolder extends RecyclerView.ViewHolder {
@@ -49,7 +51,7 @@ public class SeriesAdapter extends ListAdapter<Video, SeriesAdapter.ViewHolder> 
       itemView.setOnClickListener(v -> {
         Intent intent = new Intent(activity, DetailsActivity.class)
             .putExtra("video", getItem(getAdapterPosition()));
-        Tracker.putTrackToIntent(intent, v);
+        Tracker.setReferrerTrackNode(intent, v);
         activity.startActivity(intent);
       });
     }

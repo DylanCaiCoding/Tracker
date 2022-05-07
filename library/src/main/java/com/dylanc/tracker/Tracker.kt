@@ -17,7 +17,7 @@ internal const val KEY_TRACK_PARAMS = "track_params"
 internal const val KEY_TRACK_THREAD_NODES = "track_thread_nodes"
 private lateinit var application: Application
 private var trackHandler: TrackHandler? = null
-private val threadNodes by lazy { mutableMapOf<Class<*>, TrackNode>() }
+private val threadNodeCache by lazy { mutableMapOf<Class<*>, TrackNode>() }
 
 @JvmName("init")
 fun initTracker(application: Application, handler: TrackHandler) {
@@ -51,14 +51,11 @@ fun View.postTrack(eventId: String, vararg clazz: Class<*>) {
   trackHandler?.onEvent(application, eventId, collectTrack(*clazz))
 }
 
-@JvmName("putTrackToIntent")
-fun Intent.putTrack(activity: Activity): Intent = putTrack(activity.window.decorView)
+fun Intent.setReferrerTrackNode(activity: Activity): Intent = setReferrerTrackNode(activity.window.decorView)
 
-@JvmName("putTrackToIntent")
-fun Intent.putTrack(fragment: Fragment): Intent = putTrack(fragment.view)
+fun Intent.setReferrerTrackNode(fragment: Fragment): Intent = setReferrerTrackNode(fragment.view)
 
-@JvmName("putTrackToIntent")
-fun Intent.putTrack(view: View?): Intent = putExtra(KEY_TRACK_PARAMS, view?.collectTrack() as? Serializable)
+fun Intent.setReferrerTrackNode(view: View?): Intent = putExtra(KEY_TRACK_PARAMS, view?.collectTrack() as? Serializable)
   .putExtra(KEY_TRACK_THREAD_NODES, view?.threadNodeClasses?.let { list -> Array(list.size) { list[it].name } })
 
 fun ComponentActivity.setPageTrackNode(trackNode: TrackNode) = setPageTrackNode(emptyMap(), trackNode)
@@ -79,22 +76,22 @@ fun View.collectTrack(vararg classes: Class<*>): Map<String, String> {
   nodeList.reversed().forEach { node -> node.fillTackParams(params) }
   classes.forEach { clazz ->
     if (threadNodeClasses?.any { it == clazz } == true) {
-      threadNodes[clazz]?.fillTackParams(params)
+      threadNodeCache[clazz]?.fillTackParams(params)
     }
   }
   return params.toMap()
 }
 
 fun ComponentActivity.putTrackThreadNode(trackNode: TrackNode) {
-  threadNodes[trackNode.javaClass] = trackNode
-  if (threadNodeClazz == null) {
-    threadNodeClazz = mutableListOf(trackNode.javaClass)
+  if (threadNodeClasses == null) {
+    threadNodeClasses = mutableListOf(trackNode.javaClass)
   } else {
-    threadNodeClazz!!.add(trackNode.javaClass)
+    threadNodeClasses!!.add(trackNode.javaClass)
   }
+  threadNodeCache[trackNode.javaClass] = trackNode
   lifecycle.addObserver(object : DefaultLifecycleObserver {
     override fun onDestroy(owner: LifecycleOwner) {
-      threadNodeClazz?.forEach { threadNodes.remove(it) }
+      threadNodeCache.remove(trackNode.javaClass)
     }
   })
 }
@@ -110,9 +107,9 @@ fun <T : TrackNode> Fragment.getTrackThreadNode(clazz: Class<T>): T? = view?.get
 inline fun <reified T : TrackNode> View.getTrackThreadNode(): T? = getTrackThreadNode(T::class.java)
 
 fun <T : TrackNode> View.getTrackThreadNode(clazz: Class<T>): T? =
-  if (threadNodeClasses?.contains(clazz) == true) threadNodes[clazz] as? T else null
+  if (threadNodeClasses?.contains(clazz) == true) threadNodeCache[clazz] as? T else null
 
-internal var Activity.threadNodeClazz: MutableList<Class<*>>?
+internal var Activity.threadNodeClasses: MutableList<Class<*>>?
   get() = window.decorView.getTag(R.id.tag_track_thread) as? MutableList<Class<*>>
   set(value) {
     window.decorView.setTag(R.id.tag_track_thread, value)

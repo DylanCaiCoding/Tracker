@@ -7,7 +7,7 @@ import java.io.Serializable
 /**
  * @author Dylan Cai
  */
-class RecordThreadNode : TrackNode, Serializable {
+class RecordThreadNode : TrackNode {
   var isRecord = false
 
   override fun fillTackParams(params: TrackParams) {

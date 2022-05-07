@@ -10,6 +10,7 @@ import com.dylanc.tracker.sample.java.adapter.SeriesAdapter;
 import com.dylanc.tracker.sample.java.bean.Video;
 import com.dylanc.tracker.sample.java.databinding.LayoutListBinding;
 import com.dylanc.tracker.sample.java.repository.DataRepository;
+import com.dylanc.tracker.sample.java.track.RecordThreadNode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +31,10 @@ public class SeriesActivity extends AppCompatActivity {
     SeriesAdapter adapter = new SeriesAdapter(this);
     adapter.submitList(DataRepository.getSeriesMovies(video.getId()));
     binding.recyclerView.setAdapter(adapter);
+    RecordThreadNode recordThreadNode = Tracker.getTrackThreadNode(this, RecordThreadNode.class);
+    if (recordThreadNode != null) {
+      recordThreadNode.isRecord = true;
+    }
   }
 
   private Map<String, String> getReferrerKeyMap() {
