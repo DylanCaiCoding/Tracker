@@ -2,15 +2,14 @@ package com.dylanc.tracker.sample.track
 
 import com.dylanc.tracker.TrackNode
 import com.dylanc.tracker.TrackParams
-import java.io.Serializable
 
 /**
  * @author Dylan Cai
  */
-class RecordThreadNode : TrackNode {
-  var isRecord = false
+class ResultThreadNode : TrackNode {
+  var result: String? = null
 
   override fun fillTackParams(params: TrackParams) {
-    params.put("is_record", isRecord)
+    result?.let { params.put("result", it) }
   }
 }

@@ -11,6 +11,12 @@
     android:supportsRtl="true"
     android:theme="@style/Theme.Tracker">
     <activity
+      android:name=".ui.SignUpActivity"
+      android:exported="false" />
+    <activity
+      android:name=".ui.SignInActivity"
+      android:exported="false" />
+    <activity
       android:name=".ui.MainActivity"
       android:exported="true">
       <intent-filter>

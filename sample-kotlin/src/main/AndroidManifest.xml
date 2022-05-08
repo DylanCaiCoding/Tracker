@@ -32,6 +32,8 @@
             </intent-filter>
         </activity>
       <activity android:name=".ui.SeriesActivity" />
+      <activity android:name=".ui.SignInActivity" />
+      <activity android:name=".ui.SignUpActivity" />
     </application>
 
 </manifest>

@@ -1,7 +1,6 @@
 package com.dylanc.tracker.sample.java.ui;
 
 import android.os.Bundle;
-import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,17 +11,12 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.dylanc.tracker.Tracker;
 import com.dylanc.tracker.sample.java.R;
 import com.dylanc.tracker.sample.java.databinding.ActivityMainBinding;
-import com.dylanc.tracker.sample.java.track.RecordThreadNode;
 import com.dylanc.tracker.sample.java.ui.fragment.HomeFragment;
 import com.dylanc.tracker.sample.java.ui.fragment.MineFragment;
 import com.dylanc.tracker.sample.java.ui.fragment.TheaterFragment;
-import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import kotlin.reflect.KClasses;
 
 /**
  * @author Dylan Cai

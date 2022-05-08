@@ -8,12 +8,14 @@ import com.dylanc.tracker.TrackParams;
 /**
  * @author Dylan Cai
  */
-public class RecordThreadNode implements TrackNode {
+public class ResultThreadNode implements TrackNode {
 
-  public boolean isRecord = false;
+  public String result = null;
 
   @Override
   public void fillTackParams(@NonNull TrackParams params) {
-    params.put("is_record", isRecord);
+    if (result != null) {
+      params.put("result", result);
+    }
   }
 }

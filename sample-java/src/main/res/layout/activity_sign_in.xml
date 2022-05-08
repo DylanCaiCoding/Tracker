@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".ui.SignInActivity">
+
+  <EditText
+    android:id="@+id/editTextTextPersonName"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginEnd="16dp"
+    android:ems="10"
+    android:inputType="textPersonName"
+    android:text="admin"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <EditText
+    android:id="@+id/editTextTextPassword"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:ems="10"
+    android:text="123456"
+    android:inputType="textPassword"
+    app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName"
+    app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName"
+    app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+
+  <TextView
+    android:id="@+id/btn_sign_up"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="8dp"
+    android:padding="8dp"
+    android:text="注册"
+    android:textColor="@color/purple_500"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
+
+  <Button
+    android:id="@+id/btn_sign_in_success"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:text="模拟登录成功"
+    app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName"
+    app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName"
+    app:layout_constraintTop_toBottomOf="@+id/btn_sign_up" />
+
+  <Button
+    android:id="@+id/btn_sign_in_failure"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:text="模拟登录失败"
+    app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName"
+    app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName"
+    app:layout_constraintTop_toBottomOf="@+id/btn_sign_in_success" />
+</androidx.constraintlayout.widget.ConstraintLayout>
