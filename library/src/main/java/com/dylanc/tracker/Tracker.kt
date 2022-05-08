@@ -96,18 +96,18 @@ fun ComponentActivity.putTrackThreadNode(trackNode: TrackNode) {
   })
 }
 
-inline fun <reified T : TrackNode> Activity.getTrackThreadNode(): T? = getTrackThreadNode(T::class.java)
+inline fun <reified T : TrackNode> Activity.updateTrackThreadNode(callback: Callback<T>) = updateTrackThreadNode(T::class.java, callback)
 
-fun <T : TrackNode> Activity.getTrackThreadNode(clazz: Class<T>): T? = window.decorView.getTrackThreadNode(clazz)
+fun <T : TrackNode> Activity.updateTrackThreadNode(clazz: Class<T>, callback: Callback<T>) = window.decorView.updateTrackThreadNode(clazz, callback)
 
-inline fun <reified T : TrackNode> Fragment.getTrackThreadNode(): T? = getTrackThreadNode(T::class.java)
+inline fun <reified T : TrackNode> Fragment.updateTrackThreadNode(callback: Callback<T>) = updateTrackThreadNode(T::class.java, callback)
 
-fun <T : TrackNode> Fragment.getTrackThreadNode(clazz: Class<T>): T? = view?.getTrackThreadNode(clazz)
+fun <T : TrackNode> Fragment.updateTrackThreadNode(clazz: Class<T>, callback: Callback<T>) = view?.updateTrackThreadNode(clazz, callback)
 
-inline fun <reified T : TrackNode> View.getTrackThreadNode(): T? = getTrackThreadNode(T::class.java)
+inline fun <reified T : TrackNode> View.updateTrackThreadNode(callback: Callback<T>) = updateTrackThreadNode(T::class.java, callback)
 
-fun <T : TrackNode> View.getTrackThreadNode(clazz: Class<T>): T? =
-  if (threadNodeClasses?.contains(clazz) == true) threadNodeCache[clazz] as? T else null
+fun <T : TrackNode> View.updateTrackThreadNode(clazz: Class<T>, callback: Callback<T>) =
+  (if (threadNodeClasses?.contains(clazz) == true) threadNodeCache[clazz] as? T else null)?.let { callback.apply { it.onUpdate() } }
 
 internal var Activity.threadNodeClasses: MutableList<Class<*>>?
   get() = window.decorView.getTag(R.id.tag_track_thread) as? MutableList<Class<*>>
@@ -126,3 +126,7 @@ private val View.threadNodeClasses: List<Class<*>>?
     }
     return null
   }
+
+fun interface Callback<T : TrackNode> {
+  fun T.onUpdate()
+}
