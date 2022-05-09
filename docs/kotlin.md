@@ -1,3 +1,5 @@
+## Kotlin 用法
+
 ### 初始化
 
 在 Application 初始化，传入一个 `TrackHandler` 实例。
@@ -43,7 +45,7 @@ activity.startActivity(intent)
 trackNode = PageTrackNode("page_name" to "details")
 ```
 
-`PageTrackNode` 会将前面所有节点的参数添加进埋点中，添加的时候可以设置一些转换规则。比如上个页面的 `page_name`，跳转后上报 `from_page`。
+`PageTrackNode` 会将前面所有节点的参数添加进节点中，添加的时候可以设置一些转换规则。比如上个页面的 `page_name`，跳转后上报 `from_page`。
 
 ```kotlin
 val referrerKeyMap = mapOf("page_name" to "from_page", "channel_name" to "from_channel_name")
@@ -60,30 +62,30 @@ view.postTrack("click_favorite")
 
 ### 线索节点
 
-可在 Activity 设置线索节点，线索节点能在 View 或页面之间共享埋点参数。
+线索节点适合用于具有会话特性的流程中，方便在流程中共享参数，常见的有登录、注册的流程，订单创建流程等。
+
+在 Activity 可以设置线索节点，线索节点能在 View 或页面之间共享埋点参数。
 
 ```kotlin
-class RecordThreadNode : TrackNode {
-  var isRecord = false
+class ResultTrackNode : TrackNode {
+  var result: String? = null
 
   override fun fillTackParams(params: TrackParams) {
-    params.put("is_record", isRecord)
+    result?.let { params.put("result", it) }
   }
 }
 
-putTrackThreadNode(RecordThreadNode())
+activity.putThreadTrackNode(ResultTrackNode())
 ```
 
 之后就能在 Activity、Fragment、View 更新线索节点中的参数。
 
 ```kotlin
-view.getTrackThreadNode<RecordThreadNode>()?.isRecord = true
+view.updateThreadTrackNode<ResultTrackNode> { result = "success" }
 ```
 
 上报的时候需要对线索节点进行声明才会收集参数。
 
 ```kotlin
-view.postTrack("click_favorite", RecordThreadNode::class.java)
+view.postTrack("click_sign_in", ResultTrackNode::class.java)
 ```
-
-线索节点适合用于具有会话特性的流程中，方便在流程中共享参数，常见的有登录、注册的流程，订单创建流程等。

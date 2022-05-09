@@ -1,3 +1,5 @@
+## Java 用法
+
 ### 初始化
 
 在 Application 初始化，传入一个 `TrackHandler` 实例。
@@ -65,37 +67,36 @@ Tracker.postTrack(view, "click_favorite")
 
 ### 线索节点
 
-可在 Activity 设置线索节点，线索节点能在 View 或页面之间共享埋点参数。
+线索节点适合用于具有会话特性的流程中，方便在流程中共享参数，常见的有登录、注册的流程，订单创建流程等。
+
+在 Activity 可以设置线索节点，线索节点能在 View 或页面之间共享埋点参数。
 
 ```java
-public class RecordThreadNode implements TrackNode {
+public class ResultTrackNode implements TrackNode {
 
-  public boolean isRecord = false;
+  public String result = null;
 
   @Override
   public void fillTackParams(@NonNull TrackParams params) {
-    params.put("is_record", isRecord);
+    if (result != null) {
+      params.put("result", result);
+    }
   }
 }
 ```
 
 ```java
-Tracker.putTrackThreadNode(new RecordThreadNode());
+Tracker.putThreadTrackNode(new ResultTrackNode());
 ```
 
-之后就能在 Activity、Fragment、View 更新线索节点中的参数。
+之后可以在 Activity、Fragment、View 更新线索节点中的参数。
 
 ```java
-RecordThreadNode recordThreadNode = Tracker.getTrackThreadNode(this, RecordThreadNode.class);
-if (recordThreadNode != null) {
-  recordThreadNode.isRecord = true;
-}
+Tracker.updateThreadTrackNode(v, ResultTrackNode.class, node -> node.result = "success");
 ```
 
 上报的时候需要对线索节点进行声明才会收集参数。
 
 ```java
-Tracker.postTrack(view, "click_favorite", RecordThreadNode.class);
+Tracker.postTrack(view, "click_sign_in", ResultTrackNode.class);
 ```
-
-线索节点适合用于具有会话特性的流程中，方便在流程中共享参数，常见的有登录、注册的流程，订单创建流程等。
