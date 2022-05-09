@@ -8,7 +8,7 @@ import com.dylanc.tracker.TrackParams;
 /**
  * @author Dylan Cai
  */
-public class ResultThreadNode implements TrackNode {
+public class ResultTrackNode implements TrackNode {
 
   public String result = null;
 

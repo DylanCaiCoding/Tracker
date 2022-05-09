@@ -4,9 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.dylanc.tracker.postTrack
 import com.dylanc.tracker.sample.R
-import com.dylanc.tracker.sample.track.ResultThreadNode
 import com.dylanc.tracker.sample.ui.SignInActivity
 
 class MineFragment : Fragment(R.layout.fragment_mine) {

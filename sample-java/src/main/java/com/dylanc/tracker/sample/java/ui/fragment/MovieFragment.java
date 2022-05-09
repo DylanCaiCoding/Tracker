@@ -23,7 +23,6 @@ public class MovieFragment extends Fragment {
     super(R.layout.layout_list);
   }
 
-
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);

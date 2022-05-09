@@ -82,7 +82,7 @@ fun View.collectTrack(vararg classes: Class<*>): Map<String, String> {
   return params.toMap()
 }
 
-fun ComponentActivity.putTrackThreadNode(trackNode: TrackNode) {
+fun ComponentActivity.putThreadTrackNode(trackNode: TrackNode) {
   if (threadNodeClasses == null) {
     threadNodeClasses = mutableListOf(trackNode.javaClass)
   } else {
@@ -96,17 +96,17 @@ fun ComponentActivity.putTrackThreadNode(trackNode: TrackNode) {
   })
 }
 
-inline fun <reified T : TrackNode> Activity.updateTrackThreadNode(callback: Callback<T>) = updateTrackThreadNode(T::class.java, callback)
+inline fun <reified T : TrackNode> Activity.updateThreadTrackNode(callback: Callback<T>) = updateThreadTrackNode(T::class.java, callback)
 
-fun <T : TrackNode> Activity.updateTrackThreadNode(clazz: Class<T>, callback: Callback<T>) = window.decorView.updateTrackThreadNode(clazz, callback)
+fun <T : TrackNode> Activity.updateThreadTrackNode(clazz: Class<T>, callback: Callback<T>) = window.decorView.updateThreadTrackNode(clazz, callback)
 
-inline fun <reified T : TrackNode> Fragment.updateTrackThreadNode(callback: Callback<T>) = updateTrackThreadNode(T::class.java, callback)
+inline fun <reified T : TrackNode> Fragment.updateThreadTrackNode(callback: Callback<T>) = updateThreadTrackNode(T::class.java, callback)
 
-fun <T : TrackNode> Fragment.updateTrackThreadNode(clazz: Class<T>, callback: Callback<T>) = view?.updateTrackThreadNode(clazz, callback)
+fun <T : TrackNode> Fragment.updateThreadTrackNode(clazz: Class<T>, callback: Callback<T>) = view?.updateThreadTrackNode(clazz, callback)
 
-inline fun <reified T : TrackNode> View.updateTrackThreadNode(callback: Callback<T>) = updateTrackThreadNode(T::class.java, callback)
+inline fun <reified T : TrackNode> View.updateThreadTrackNode(callback: Callback<T>) = updateThreadTrackNode(T::class.java, callback)
 
-fun <T : TrackNode> View.updateTrackThreadNode(clazz: Class<T>, callback: Callback<T>) =
+fun <T : TrackNode> View.updateThreadTrackNode(clazz: Class<T>, callback: Callback<T>) =
   (if (threadNodeClasses?.contains(clazz) == true) threadNodeCache[clazz] as? T else null)?.let { callback.apply { it.onUpdate() } }
 
 internal var Activity.threadNodeClasses: MutableList<Class<*>>?

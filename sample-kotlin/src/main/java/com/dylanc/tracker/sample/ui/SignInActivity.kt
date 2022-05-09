@@ -4,11 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.dylanc.tracker.postTrack
-import com.dylanc.tracker.putTrackThreadNode
+import com.dylanc.tracker.putThreadTrackNode
 import com.dylanc.tracker.sample.databinding.ActivitySignInBinding
-import com.dylanc.tracker.sample.track.ResultThreadNode
+import com.dylanc.tracker.sample.track.ResultThrackNode
 import com.dylanc.tracker.setReferrerTrackNode
-import com.dylanc.tracker.updateTrackThreadNode
+import com.dylanc.tracker.updateThreadTrackNode
 
 class SignInActivity : AppCompatActivity() {
   private val binding by lazy { ActivitySignInBinding.inflate(layoutInflater) }
@@ -17,14 +17,14 @@ class SignInActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(binding.root)
     title = "登录"
-    putTrackThreadNode(ResultThreadNode())
+    putThreadTrackNode(ResultThrackNode())
     binding.btnSignInSuccess.setOnClickListener { view ->
-      view.updateTrackThreadNode<ResultThreadNode> { result = "success" }
-      view.postTrack("click_sign_in", ResultThreadNode::class.java)
+      view.updateThreadTrackNode<ResultThrackNode> { result = "success" }
+      view.postTrack("click_sign_in", ResultThrackNode::class.java)
     }
     binding.btnSignInFailure.setOnClickListener { view ->
-      view.updateTrackThreadNode<ResultThreadNode> { result = "failure" }
-      view.postTrack("click_sign_in", ResultThreadNode::class.java)
+      view.updateThreadTrackNode<ResultThrackNode> { result = "failure" }
+      view.postTrack("click_sign_in", ResultThrackNode::class.java)
     }
     binding.btnSignUp.setOnClickListener { view ->
       startActivity(Intent(this, SignUpActivity::class.java).setReferrerTrackNode(view))

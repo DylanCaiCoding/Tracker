@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.dylanc.tracker.Tracker;
 import com.dylanc.tracker.sample.java.databinding.ActivitySignInBinding;
-import com.dylanc.tracker.sample.java.track.ResultThreadNode;
+import com.dylanc.tracker.sample.java.track.ResultTrackNode;
 
 /**
  * @author Dylan Cai
@@ -21,14 +21,14 @@ public class SignInActivity extends AppCompatActivity {
     ActivitySignInBinding binding = ActivitySignInBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
     setTitle("登录");
-    Tracker.putTrackThreadNode(this, new ResultThreadNode());
+    Tracker.putThreadTrackNode(this, new ResultTrackNode());
     binding.btnSignInSuccess.setOnClickListener(v -> {
-      Tracker.updateTrackThreadNode(v, ResultThreadNode.class, (ResultThreadNode node) -> node.result = "success");
-      Tracker.postTrack(v, "click_sign_in", ResultThreadNode.class);
+      Tracker.updateThreadTrackNode(v, ResultTrackNode.class, node -> node.result = "success");
+      Tracker.postTrack(v, "click_sign_in", ResultTrackNode.class);
     });
     binding.btnSignInFailure.setOnClickListener(v -> {
-      Tracker.updateTrackThreadNode(v, ResultThreadNode.class, (ResultThreadNode node) -> node.result = "failure");
-      Tracker.postTrack(v, "click_sign_in", ResultThreadNode.class);
+      Tracker.updateThreadTrackNode(v, ResultTrackNode.class, node -> node.result = "failure");
+      Tracker.postTrack(v, "click_sign_in", ResultTrackNode.class);
     });
     binding.btnSignUp.setOnClickListener(v -> {
       Intent intent = new Intent(this, SignUpActivity.class);

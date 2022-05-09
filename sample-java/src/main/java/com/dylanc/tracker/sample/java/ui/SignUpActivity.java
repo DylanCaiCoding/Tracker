@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.dylanc.tracker.Tracker;
 import com.dylanc.tracker.sample.java.databinding.ActivitySignUpBinding;
-import com.dylanc.tracker.sample.java.track.ResultThreadNode;
+import com.dylanc.tracker.sample.java.track.ResultTrackNode;
 
 /**
  * @author Dylan Cai
@@ -22,12 +22,12 @@ public class SignUpActivity extends AppCompatActivity {
     setTitle("注册");
     Tracker.setPageTrackNode(this);
     binding.btnSignUpSuccess.setOnClickListener(v -> {
-      Tracker.updateTrackThreadNode(v, ResultThreadNode.class, (ResultThreadNode node) -> node.result = "success");
-      Tracker.postTrack(v, "click_sign_up", ResultThreadNode.class);
+      Tracker.updateThreadTrackNode(v, ResultTrackNode.class, node -> node.result = "success");
+      Tracker.postTrack(v, "click_sign_up", ResultTrackNode.class);
     });
     binding.btnSignUpFailure.setOnClickListener(v -> {
-      Tracker.updateTrackThreadNode(v, ResultThreadNode.class, (ResultThreadNode node) -> node.result = "failure");
-      Tracker.postTrack(v, "click_sign_up", ResultThreadNode.class);
+      Tracker.updateThreadTrackNode(v, ResultTrackNode.class, node -> node.result = "failure");
+      Tracker.postTrack(v, "click_sign_up", ResultTrackNode.class);
     });
   }
 }

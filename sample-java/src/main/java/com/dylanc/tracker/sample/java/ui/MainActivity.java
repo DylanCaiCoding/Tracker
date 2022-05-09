@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
-    Tracker.setTrackNode(this, (params) -> params.put("page_name", "main"));
+    Tracker.setTrackNode(this, params -> params.put("page_name", "main"));
 
     List<Fragment> fragments = new ArrayList<>();
     fragments.add(new HomeFragment());

@@ -6,7 +6,7 @@ import com.dylanc.tracker.TrackParams
 /**
  * @author Dylan Cai
  */
-class ResultThreadNode : TrackNode {
+class ResultThrackNode : TrackNode {
   var result: String? = null
 
   override fun fillTackParams(params: TrackParams) {
