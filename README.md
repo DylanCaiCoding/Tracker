@@ -8,7 +8,7 @@ Tracker is a lightweight tracking framework based on [the tracking idea of Buzzv
 
 ## Tracking idea
 
-- [Why use chain of responsibility tracking?](https://dylancaicoding.github.io/Tracker/#/idea)
+[Why use chain of responsibility tracking?](https://dylancaicoding.github.io/Tracker/#/idea)
 
 ## Sample
 
@@ -39,7 +39,7 @@ dependencies {
 
 ### Usage
 
-See the documentation for [Java usage](https://dylancaicoding.github.io/Tracker/#/java).
+> See the documentation for [Java usage](https://dylancaicoding.github.io/Tracker/#/java).
 
 #### Initialization
 
@@ -64,15 +64,15 @@ trackNode = TrackNode("channel_name" to "recommend")
 ```
 
 ```kotlin
-holder.itemView.trackNode = TrackNode("video_id" to item.id)
+holder.itemView.trackNode = TrackNode("video_id" to item.id, "video_type" to item.type)
 ```
 
 #### Establish a page source responsibility chain
 
-When starting an activity, you need to call `intent.setReferrerTrackNode(activity/fragment/view)` to set the source node.
+When starting an activity, you need to call `intent.putReferrerTrackNode(activity/fragment/view)` to set the source node.
 
 ```kotlin
-val intent = Intent(activity, DetailsActivity::class.java).setReferrerTrackNode(view)
+val intent = Intent(activity, DetailsActivity::class.java).putReferrerTrackNode(view)
 activity.startActivity(intent)
 ```
 
@@ -102,27 +102,27 @@ view.postTrack("click_favorite")
 In the activity, you can set up a thread node, which can share the tracking parameter between views or pages.
 
 ```kotlin
-class ResultThreadNode : TrackNode {
-  var result: String? = null
+class RecordTrackNode : TrackNode {
+  var isRecord = false
 
   override fun fillTackParams(params: TrackParams) {
-    result?.let { params.put("result", it) }
+    params.put("is_record", it)
   }
 }
 
-activity.putTrackThreadNode(ResultThreadNode())
+activity.putThreadTrackNode(RecordTrackNode())
 ```
 
 You can then update the parameters of the thread node in Activity, Fragment, View.
 
 ```kotlin
-view.updateTrackThreadNode<ResultThreadNode> { result = "success" }
+view.updateThreadTrackNode<RecordTrackNode> { isRecord = true }
 ```
 
 Declare the thread node class when reporting.
 
 ```kotlin
-view.postTrack("click_favorite", ResultThreadNode::class.java)
+view.postTrack("click_publish", RecordTrackNode::class.java)
 ```
 
 ## Author's other libraries

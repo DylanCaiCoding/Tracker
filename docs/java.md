@@ -18,27 +18,27 @@ public class UMTrackHandler implements TrackHandler {
 }
 ```
 
-### 建立页面上下级责任链
+### 建立页面内上下级责任链
 
-给 Activity、Fragment 或 View 设置埋点节点 `trackNode` 添加埋点参数。
+可以给 Activity、Fragment、View 设置埋点节点 `trackNode` 添加埋点参数。
 
 ```java
 Tracker.setTrackNode(this, params -> params.put("channel_name", "recommend"));
 ```
 
 ```java
-Tracker.setTrackNode(holder.itemView, params -> params.put("video_id", item.id));
+Tracker.setTrackNode(holder.itemView, params -> params.put("video_id", item.getId()).put("video_type", item.getType()));
 ```
 
 通过视图树的层级关系（比如：`Activity -> Fragment -> ViewHolder -> Button`）就能建立节点的上下级责任链关系。
 
 ### 建立页面来源责任链
 
-页面跳转时需要调用 `Tracker.setReferrerTrackNode(intent, activity/fragment/view)` 设置来源节点。
+页面跳转时需要调用 `Tracker.putReferrerTrackNode(intent, activity/fragment/view)` 设置来源节点。
 
 ```java
 Intent intent = new Intent(activity, DetailsActivity.class);
-Tracker.setReferrerTrackNode(intent, view);
+Tracker.putReferrerTrackNode(intent, view);
 activity.startActivity(intent);
 ```
 
@@ -48,7 +48,7 @@ activity.startActivity(intent);
 Tracker.setPageTrackNode(this, params -> params.put("page_name", "details"));
 ```
 
-`PageTrackNode` 会将前面所有节点的参数添加进埋点中，添加的时候可以设置一些转换规则。比如上个页面的 `page_name`，跳转后上报 `from_page`。
+`PageTrackNode` 会添加前面所有节点的参数，添加的时候可以设置一些转换规则。比如上个页面的 `page_name`，跳转后上报 `from_page`。
 
 ```java
 HashMap<String, String> referrerKeyMap = new HashMap<>();
@@ -67,36 +67,34 @@ Tracker.postTrack(view, "click_favorite")
 
 ### 线索节点
 
-线索节点适合用于具有会话特性的流程中，方便在流程中共享参数，常见的有登录、注册的流程，订单创建流程等。
+线索节点适合用于具有会话特性的流程中，方便在流程中共享参数，常见的有登录、注册的流程、订单创建流程等。
 
 在 Activity 可以设置线索节点，线索节点能在 View 或页面之间共享埋点参数。
 
 ```java
-public class ResultTrackNode implements TrackNode {
+public class RecordTrackNode implements TrackNode {
 
-  public String result = null;
+  public boolean isRecord = false;
 
   @Override
   public void fillTackParams(@NonNull TrackParams params) {
-    if (result != null) {
-      params.put("result", result);
-    }
+    params.put("is_record", isRecord);
   }
 }
 ```
 
 ```java
-Tracker.putThreadTrackNode(new ResultTrackNode());
+Tracker.putThreadTrackNode(new RecordTrackNode());
 ```
 
 之后可以在 Activity、Fragment、View 更新线索节点中的参数。
 
 ```java
-Tracker.updateThreadTrackNode(v, ResultTrackNode.class, node -> node.result = "success");
+Tracker.updateThreadTrackNode(v, RecordTrackNode.class, node -> node.isRecord = true);
 ```
 
 上报的时候需要对线索节点进行声明才会收集参数。
 
 ```java
-Tracker.postTrack(view, "click_sign_in", ResultTrackNode.class);
+Tracker.postTrack(view, "click_publish", RecordTrackNode.class);
 ```

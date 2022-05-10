@@ -2,11 +2,11 @@
 
 [![](https://www.jitpack.io/v/DylanCaiCoding/Tracker.svg)](https://www.jitpack.io/#DylanCaiCoding/Tracker) [![](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/Tracker/blob/master/LICENSE)
 
-Tracker 是基于[西瓜视频责任链的埋点思路](https://mp.weixin.qq.com/s/iMn--4FNugtH26G90N1MaQ)实现的轻量级埋点框架。个人理解其核心思想后进行改进和优化，最后使用了不到 200 行代码（不含注释）实现，整体更加简洁易用，同时兼顾了 Kotlin 和 Java 的用法。
+Tracker 是基于[西瓜视频责任链的埋点思路](https://mp.weixin.qq.com/s/iMn--4FNugtH26G90N1MaQ)实现的轻量级埋点框架。个人理解其核心思想后进行了改进和优化，最后使用了不到 200 行代码（不含注释）实现，学习成本更低，并且兼顾了 Kotlin 和 Java 用法。
 
 ### 埋点思路
 
-- [为什么使用责任链的埋点方案？](/idea)
+[为什么使用责任链的埋点方案？](/idea)
 
 ### 示例
 
@@ -37,6 +37,10 @@ dependencies {
 
 - [Kotlin 用法](/kotlin)
 - [Java 用法](/java)
+
+### 反馈
+
+有问题可以提 [issues](https://github.com/DylanCaiCoding/Tracker/issues) 或加个人微信 `DylanCaiCoding`直接反馈。
 
 ### 作者其它的库
 

@@ -16,26 +16,26 @@ class UMTrackHandler : TrackHandler {
 }
 ```
 
-### 建立页面上下级责任链
+### 建立页面内上下级责任链
 
-给 Activity、Fragment 或 View 设置埋点节点 `trackNode` 添加埋点参数。
+可以给 Activity、Fragment、View 设置埋点节点 `trackNode` 添加埋点参数。
 
 ```kotlin
 trackNode = TrackNode("channel_name" to "recommend")
 ```
 
 ```kotlin
-holder.itemView.trackNode = TrackNode("video_id" to item.id)
+holder.itemView.trackNode = TrackNode("video_id" to item.id, "video_type" to item.type)
 ```
 
 通过视图树的层级关系（比如：`Activity -> Fragment -> ViewHolder -> Button`）就能建立节点的上下级责任链关系。
 
 ### 建立页面来源责任链
 
-页面跳转时需要调用 `intent.setReferrerTrackNode(activity/fragment/view)` 设置来源节点。
+页面跳转时需要调用 `intent.putReferrerTrackNode(activity/fragment/view)` 设置来源节点。
 
 ```kotlin
-val intent = Intent(activity, DetailsActivity::class.java).setReferrerTrackNode(view)
+val intent = Intent(activity, DetailsActivity::class.java).putReferrerTrackNode(view)
 activity.startActivity(intent)
 ```
 
@@ -45,7 +45,7 @@ activity.startActivity(intent)
 trackNode = PageTrackNode("page_name" to "details")
 ```
 
-`PageTrackNode` 会将前面所有节点的参数添加进节点中，添加的时候可以设置一些转换规则。比如上个页面的 `page_name`，跳转后上报 `from_page`。
+`PageTrackNode` 会添加前面所有节点的参数，添加的时候可以设置一些转换规则。比如上个页面的 `page_name`，跳转后上报 `from_page`。
 
 ```kotlin
 val referrerKeyMap = mapOf("page_name" to "from_page", "channel_name" to "from_channel_name")
@@ -62,30 +62,30 @@ view.postTrack("click_favorite")
 
 ### 线索节点
 
-线索节点适合用于具有会话特性的流程中，方便在流程中共享参数，常见的有登录、注册的流程，订单创建流程等。
+线索节点适合用于具有会话特性的流程中，方便在流程中共享参数，常见的有登录、注册的流程、订单创建流程等。
 
 在 Activity 可以设置线索节点，线索节点能在 View 或页面之间共享埋点参数。
 
 ```kotlin
-class ResultTrackNode : TrackNode {
-  var result: String? = null
+class RecordTrackNode : TrackNode {
+  var isRecord = false
 
   override fun fillTackParams(params: TrackParams) {
-    result?.let { params.put("result", it) }
+    params.put("is_record", it)
   }
 }
 
-activity.putThreadTrackNode(ResultTrackNode())
+activity.putThreadTrackNode(RecordTrackNode())
 ```
 
 之后就能在 Activity、Fragment、View 更新线索节点中的参数。
 
 ```kotlin
-view.updateThreadTrackNode<ResultTrackNode> { result = "success" }
+view.updateThreadTrackNode<RecordTrackNode> { isRecord = true }
 ```
 
 上报的时候需要对线索节点进行声明才会收集参数。
 
 ```kotlin
-view.postTrack("click_sign_in", ResultTrackNode::class.java)
+view.postTrack("click_publish", RecordTrackNode::class.java)
 ```

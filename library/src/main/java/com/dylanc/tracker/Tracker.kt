@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2022. Dylan Cai
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 @file:JvmName("Tracker")
 @file:Suppress("unused", "UNCHECKED_CAST")
 
@@ -43,19 +59,11 @@ var View.trackNode: TrackNode?
     setTag(R.id.tag_track_node, value)
   }
 
-fun Activity.postTrack(eventName: String, vararg clazz: Class<*>) = window.decorView.postTrack(eventName, *clazz)
+fun Intent.putReferrerTrackNode(activity: Activity): Intent = putReferrerTrackNode(activity.window.decorView)
 
-fun Fragment.postTrack(eventName: String, vararg clazz: Class<*>) = view?.postTrack(eventName, *clazz)
+fun Intent.putReferrerTrackNode(fragment: Fragment): Intent = putReferrerTrackNode(fragment.view)
 
-fun View.postTrack(eventId: String, vararg clazz: Class<*>) {
-  trackHandler?.onEvent(application, eventId, collectTrack(*clazz))
-}
-
-fun Intent.setReferrerTrackNode(activity: Activity): Intent = setReferrerTrackNode(activity.window.decorView)
-
-fun Intent.setReferrerTrackNode(fragment: Fragment): Intent = setReferrerTrackNode(fragment.view)
-
-fun Intent.setReferrerTrackNode(view: View?): Intent = putExtra(KEY_TRACK_PARAMS, view?.collectTrack() as? Serializable)
+fun Intent.putReferrerTrackNode(view: View?): Intent = putExtra(KEY_TRACK_PARAMS, view?.collectTrack() as? Serializable)
   .putExtra(KEY_TRACK_THREAD_NODES, view?.threadNodeClasses?.let { list -> Array(list.size) { list[it].name } })
 
 fun ComponentActivity.setPageTrackNode(trackNode: TrackNode) = setPageTrackNode(emptyMap(), trackNode)
@@ -63,6 +71,14 @@ fun ComponentActivity.setPageTrackNode(trackNode: TrackNode) = setPageTrackNode(
 @JvmOverloads
 fun ComponentActivity.setPageTrackNode(referrerKeyMap: Map<String, String> = emptyMap(), trackNode: TrackNode = TrackNode { }) {
   this.trackNode = PageTrackNode(referrerKeyMap, trackNode)
+}
+
+fun Activity.postTrack(eventName: String, vararg clazz: Class<*>) = window.decorView.postTrack(eventName, *clazz)
+
+fun Fragment.postTrack(eventName: String, vararg clazz: Class<*>) = view?.postTrack(eventName, *clazz)
+
+fun View.postTrack(eventId: String, vararg clazz: Class<*>) {
+  trackHandler?.onEvent(application, eventId, collectTrack(*clazz))
 }
 
 fun View.collectTrack(vararg classes: Class<*>): Map<String, String> {
@@ -90,6 +106,12 @@ fun ComponentActivity.putThreadTrackNode(trackNode: TrackNode) {
   }
   threadNodeCache[trackNode.javaClass] = trackNode
   lifecycle.addObserver(object : DefaultLifecycleObserver {
+    override fun onResume(owner: LifecycleOwner) {
+      if (threadNodeCache[trackNode.javaClass] == null) {
+        threadNodeCache[trackNode.javaClass] = trackNode
+      }
+    }
+
     override fun onDestroy(owner: LifecycleOwner) {
       threadNodeCache.remove(trackNode.javaClass)
     }
