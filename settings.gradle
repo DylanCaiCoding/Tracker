@@ -1,20 +1,4 @@
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
-        maven { url 'https://repo1.maven.org/maven2/' }
-    }
-}
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-        maven { url 'https://repo1.maven.org/maven2/' }
-    }
-}
 rootProject.name = "Tracker"
-include ':sample-kotlin'
 include ':library'
+include ':sample-kotlin'
 include ':sample-java'
