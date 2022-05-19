@@ -2,13 +2,14 @@
 
 English | [中文](README_ZH.md)
 
-[![](https://www.jitpack.io/v/DylanCaiCoding/Tracker.svg)](https://www.jitpack.io/#DylanCaiCoding/Tracker) [![](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/Tracker/blob/master/LICENSE)
+[![](https://www.jitpack.io/v/DylanCaiCoding/Tracker.svg)](https://www.jitpack.io/#DylanCaiCoding/Tracker) 
+[![](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/Tracker/blob/master/LICENSE)
 
 Tracker is a lightweight tracking framework based on [the tracking idea of Buzzvideo](https://mp.weixin.qq.com/s/iMn--4FNugtH26G90N1MaQ).
 
 ## Tracking idea
 
-[Why use chain of responsibility tracking?](https://dylancaicoding.github.io/Tracker/#/idea)
+[Why use chain of responsibility tracking?](https://dylancaicoding.github.io/Tracker/#/zh/idea)
 
 ## Sample
 
@@ -39,7 +40,7 @@ dependencies {
 
 ### Usage
 
-> See the documentation for [Java usage](https://dylancaicoding.github.io/Tracker/#/java).
+> See the documentation for [Java usage](https://dylancaicoding.github.io/Tracker/#/zh/usage).
 
 #### Initialization
 

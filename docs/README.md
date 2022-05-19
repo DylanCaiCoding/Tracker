@@ -1,18 +1,20 @@
 # Tracker
 
-[![](https://www.jitpack.io/v/DylanCaiCoding/Tracker.svg)](https://www.jitpack.io/#DylanCaiCoding/Tracker) [![](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/Tracker/blob/master/LICENSE)
+[![](https://www.jitpack.io/v/DylanCaiCoding/Tracker.svg)](https://www.jitpack.io/#DylanCaiCoding/Tracker) 
+[![](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/Tracker/blob/master/LICENSE)
+[![GitHub Repo stars](https://img.shields.io/github/stars/DylanCaiCoding/Tracker?style=social)](https://github.com/DylanCaiCoding/Tracker)
 
 Tracker 是基于[西瓜视频责任链的埋点思路](https://mp.weixin.qq.com/s/iMn--4FNugtH26G90N1MaQ)实现的轻量级埋点框架。个人理解其核心思想后进行了改进和优化，最后使用了不到 200 行代码（不含注释）实现，学习成本更低，并且兼顾了 Kotlin 和 Java 用法。
 
-### 埋点思路
+## 埋点思路
 
-[为什么使用责任链的埋点方案？](/idea)
+[为什么使用责任链的埋点方案？](/zh/idea)
 
-### 示例
+## 示例
 
 本库有模拟西瓜视频埋点需求的示例代码，大家可以克隆项目运行 `sample-java` 或 `sample-kotlin`，点击各个位置的收藏按钮查看埋点日志。
 
-### 开始使用
+## Gradle
 
 在根目录的 build.gradle 添加：
 
@@ -33,16 +35,11 @@ dependencies {
 }
 ```
 
-用法：
-
-- [Kotlin 用法](/kotlin)
-- [Java 用法](/java)
-
-### 反馈
+## 反馈
 
 有问题可以提 [issues](https://github.com/DylanCaiCoding/Tracker/issues) 或加个人微信 `DylanCaiCoding`直接反馈。
 
-### 作者其它的库
+## 作者其它的库
 
 | 库                                                           | 简介                                           |
 | ------------------------------------------------------------ | ---------------------------------------------- |
@@ -51,7 +48,7 @@ dependencies {
 | [ViewBindingKTX](https://github.com/DylanCaiCoding/ViewBindingKTX) | 最全面的 ViewBinding 工具                    |
 | [MMKV-KTX](https://github.com/DylanCaiCoding/MMKV-KTX)       | 用属性委托的方式使用 MMKV                            |
 
-### License
+## License
 
 ```
 Copyright (C) 2022. Dylan Cai

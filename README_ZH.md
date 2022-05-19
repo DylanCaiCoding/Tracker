@@ -2,13 +2,14 @@
 
 [English](https://github.com/DylanCaiCoding/Tracker) | 中文
 
-[![](https://www.jitpack.io/v/DylanCaiCoding/Tracker.svg)](https://www.jitpack.io/#DylanCaiCoding/Tracker) [![](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/Tracker/blob/master/LICENSE)
+[![](https://www.jitpack.io/v/DylanCaiCoding/Tracker.svg)](https://www.jitpack.io/#DylanCaiCoding/Tracker) 
+[![](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/Tracker/blob/master/LICENSE)
 
 Tracker 是基于[西瓜视频责任链的埋点思路](https://mp.weixin.qq.com/s/iMn--4FNugtH26G90N1MaQ)实现的轻量级埋点框架。个人理解其核心思想后进行了改进和优化，最后使用了不到 200 行代码（不含注释）实现，学习成本更低，并且兼顾了 Kotlin 和 Java 用法。
 
 ## 埋点思路
 
-[为什么使用责任链的埋点方案？](https://dylancaicoding.github.io/Tracker/#/idea)
+[为什么使用责任链的埋点方案？](https://dylancaicoding.github.io/Tracker/#/zh/idea)
 
 ## 示例
 
@@ -39,7 +40,7 @@ dependencies {
 
 ### 用法
 
-> [Java 用法](https://dylancaicoding.github.io/Tracker/#/java) 请查看文档。
+> [Java 用法](https://dylancaicoding.github.io/Tracker/#/zh/usage) 请查看文档。
 
 #### 初始化
 
