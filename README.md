@@ -34,7 +34,7 @@ Add dependencies：
 
 ```groovy
 dependencies {
-    implementation 'com.github.DylanCaiCoding:Track:1.0.0'
+    implementation 'com.github.DylanCaiCoding:Tracker:1.0.0'
 }
 ```
 
