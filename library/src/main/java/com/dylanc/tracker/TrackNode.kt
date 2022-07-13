@@ -35,7 +35,7 @@ fun Activity.PageTrackNode(referrerKeyMap: Map<String, String>, vararg params: P
 
 fun Activity.PageTrackNode(referrerKeyMap: Map<String, String> = emptyMap(), trackNode: TrackNode = TrackNode { }): TrackNode {
   val referrerParams = intent.getSerializableExtra(KEY_TRACK_PARAMS) as? Map<String, Any>
-  threadNodeClasses = intent.getStringArrayExtra(KEY_TRACK_THREAD_NODES)?.run { MutableList(size) { Class.forName(get(it)) } }
+  window.decorView.setTag(R.id.tag_thread_node_names, intent.getStringArrayExtra(KEY_TRACK_THREAD_NODES)?.toMutableList())
   return TrackNode { params ->
     referrerParams?.forEach {
       params.put(referrerKeyMap.getOrElse(it.key) { it.key }, it.value)
