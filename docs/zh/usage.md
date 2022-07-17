@@ -40,7 +40,7 @@ public class UMTrackHandler implements TrackHandler {
 
 ## 建立页面内上下级责任链
 
-可以给 Activity、Fragment、View 设置埋点节点 `trackNode` 添加埋点参数。
+可以给 Activity、Fragment、View 设置埋点节点 `TrackNode` 添加埋点参数。
 
 <!-- tabs:start -->
 
@@ -70,7 +70,7 @@ Tracker.setTrackNode(holder.itemView, params -> params.put("video_id", item.getI
 
 ## 建立页面来源责任链
 
-页面跳转时需要调用设置来源节点。
+页面跳转时需要设置来源节点。
 
 <!-- tabs:start -->
 

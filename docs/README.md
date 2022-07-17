@@ -4,7 +4,7 @@
 [![](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/Tracker/blob/master/LICENSE)
 [![GitHub Repo stars](https://img.shields.io/github/stars/DylanCaiCoding/Tracker?style=social)](https://github.com/DylanCaiCoding/Tracker)
 
-Tracker 是基于[西瓜视频责任链的埋点思路](https://mp.weixin.qq.com/s/iMn--4FNugtH26G90N1MaQ)实现的轻量级埋点框架。个人理解其核心思想后进行了改进和优化，最后使用了不到 200 行代码（不含注释）实现，学习成本更低，并且兼顾了 Kotlin 和 Java 用法。
+Tracker 是基于[西瓜视频责任链的埋点思路](https://mp.weixin.qq.com/s/iMn--4FNugtH26G90N1MaQ)实现的轻量级埋点框架。个人理解其核心思想后进行了改进和优化，最后仅用了 200 多行代码实现，学习成本更低，并且兼顾了 Kotlin 和 Java 用法。
 
 ## 埋点思路
 
