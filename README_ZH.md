@@ -5,7 +5,7 @@
 [![](https://www.jitpack.io/v/DylanCaiCoding/Tracker.svg)](https://www.jitpack.io/#DylanCaiCoding/Tracker) 
 [![](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/Tracker/blob/master/LICENSE)
 
-Tracker 是基于[西瓜视频责任链的埋点思路](https://mp.weixin.qq.com/s/iMn--4FNugtH26G90N1MaQ)实现的轻量级埋点框架。个人理解其核心思想后进行了改进和优化，最后使用了不到 200 行代码（不含注释）实现，学习成本更低，并且兼顾了 Kotlin 和 Java 用法。
+Tracker 是基于[西瓜视频的责任链埋点思路](https://mp.weixin.qq.com/s/iMn--4FNugtH26G90N1MaQ)实现的轻量级埋点框架。个人理解其核心思想后进行了改进和优化，最后仅用了 200 多行代码实现，学习成本更低，并且兼顾了 Kotlin 和 Java 用法。
 
 ## 埋点思路
 
@@ -15,9 +15,7 @@ Tracker 是基于[西瓜视频责任链的埋点思路](https://mp.weixin.qq.com
 
 本库有模拟西瓜视频埋点需求的示例代码，大家可以克隆项目运行 `sample-java` 或 `sample-kotlin`，点击各个位置的收藏按钮查看埋点日志。
 
-## 开始使用
-
-### Gradle
+## Gradle
 
 在根目录的 build.gradle 添加：
 
@@ -38,29 +36,13 @@ dependencies {
 }
 ```
 
-### 用法
+## 用法
 
-> [Java 用法](https://dylancaicoding.github.io/Tracker/#/zh/usage) 请查看文档。
+:pencil: **[>> 使用文档 <<](https://dylancaicoding.github.io/Tracker/#/zh/usage)**
 
-#### 初始化
+## 示例
 
-在 Application 初始化，传入一个 `TrackHandler` 实例。
-
-```kotlin
-initTracker(this, UMTrackHandler())
-```
-
-```kotlin
-class UMTrackHandler : TrackHandler {
-  override fun onEvent(context: Context, eventId: String, params: Map<String, String>) {
-    MobclickAgent.onEvent(context, eventId, params) // 以友盟统计为例
-  }
-}
-```
-
-#### 建立页面内上下级责任链
-
-可以给 Activity、Fragment、View 设置埋点节点 `trackNode` 添加埋点参数。
+给 Activity、Fragment、View 设置埋点节点，通过视图树的层级关系（比如：`Activity -> Fragment -> ViewHolder -> Button`）就能建立节点的上下级责任链关系。
 
 ```kotlin
 trackNode = TrackNode("channel_name" to "recommend")
@@ -70,66 +52,25 @@ trackNode = TrackNode("channel_name" to "recommend")
 holder.itemView.trackNode = TrackNode("video_id" to item.id, "video_type" to item.type)
 ```
 
-通过视图树的层级关系（比如：`Activity -> Fragment -> ViewHolder -> Button`）就能建立节点的上下级责任链关系。
-
-#### 建立页面来源责任链
-
-页面跳转时需要调用 `intent.putReferrerTrackNode(activity/fragment/view)` 设置来源节点。
+通过设置来源节点和页面节点建立页面间的来源关系。
 
 ```kotlin
 val intent = Intent(activity, DetailsActivity::class.java).putReferrerTrackNode(view)
 activity.startActivity(intent)
 ```
 
-然后在跳转的 Activity 设置一个页面节点 `PageTrackNode`，这样就建立了页面间的来源责任链。
-
 ```kotlin
-trackNode = PageTrackNode("page_name" to "details")
+activity.trackNode = PageTrackNode("page_name" to "details")
 ```
 
-`PageTrackNode` 会添加前面所有节点的参数，添加的时候可以设置一些转换规则。比如上个页面的 `page_name`，跳转后上报 `from_page`。
+这样就建立了类似下图的责任链。
 
-```kotlin
-val referrerKeyMap = mapOf("page_name" to "from_page", "channel_name" to "from_channel_name")
-trackNode = PageTrackNode(referrerKeyMap, "page_name" to "details")
-```
+![图片](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e4056fcff5a84c75988f4fa60e7e6ab5~tplv-k3u1fbpfcp-zoom-1.image)
 
-#### 上报埋点参数
-
-调用 `Activity/Fragment/View.postTrack(eventId)` 会通过上下级责任链和来源责任链收集埋点参数，回调给 `TrackHandler` 进行上报。
+后续就能通过任意控件去上报责任链上的埋点参数。
 
 ```kotlin
 view.postTrack("click_favorite")
-```
-
-#### 线索节点
-
-线索节点适合用于具有会话特性的流程中，方便在流程中共享参数，常见的有登录、注册的流程、订单创建流程等。
-
-在 Activity 可以设置线索节点，线索节点能在 View 或页面之间共享埋点参数。
-
-```kotlin
-class RecordTrackNode : TrackNode {
-  var isRecord = false
-
-  override fun fillTackParams(params: TrackParams) {
-    params.put("is_record", it)
-  }
-}
-
-activity.putThreadTrackNode(RecordTrackNode())
-```
-
-之后就能在 Activity、Fragment、View 更新线索节点中的参数。
-
-```kotlin
-view.updateThreadTrackNode<RecordTrackNode> { isRecord = true }
-```
-
-上报的时候需要对线索节点进行声明才会收集参数。
-
-```kotlin
-view.postTrack("click_publish", RecordTrackNode::class.java)
 ```
 
 ## 反馈
