@@ -9,7 +9,7 @@
 #### **Kotlin**
 
 ```kotlin
-initTracker(this, UMTrackHandler())
+initTracker(UMTrackHandler())
 ```
 
 ```kotlin

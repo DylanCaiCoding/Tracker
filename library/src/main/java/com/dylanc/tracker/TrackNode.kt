@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused", "UNCHECKED_CAST", "FunctionName")
+@file:Suppress("unused", "FunctionName")
 
 package com.dylanc.tracker
 
@@ -33,14 +33,15 @@ fun Activity.PageTrackNode(vararg params: Pair<String, String>): TrackNode =
 fun Activity.PageTrackNode(referrerKeyMap: Map<String, String>, vararg params: Pair<String, String>): TrackNode =
   PageTrackNode(referrerKeyMap) { it.putAll(mapOf(*params)) }
 
+@Suppress("UNCHECKED_CAST")
 fun Activity.PageTrackNode(referrerKeyMap: Map<String, String> = emptyMap(), trackNode: TrackNode = TrackNode { }): TrackNode {
   val referrerParams = intent.getSerializableExtra(KEY_TRACK_PARAMS) as? Map<String, Any>
-  window.decorView.setTag(R.id.tag_thread_node_names, intent.getStringArrayExtra(KEY_TRACK_THREAD_NODES)?.toMutableList())
+  val threadNodeSet = intent.getStringArrayExtra(KEY_TRACK_THREAD_NODES)?.map { allThreadNodes[it] }?.toMutableSet()
+  window.decorView.setTag(R.id.tag_thread_nodes, threadNodeSet)
   return TrackNode { params ->
     referrerParams?.forEach {
       params.put(referrerKeyMap.getOrElse(it.key) { it.key }, it.value)
-    }?.let {
-      trackNode.fillTackParams(params)
     }
+    trackNode.fillTackParams(params)
   }
 }

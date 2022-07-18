@@ -2,7 +2,7 @@
 
 English | [中文](README_ZH.md)
 
-[![](https://www.jitpack.io/v/DylanCaiCoding/Tracker.svg)](https://www.jitpack.io/#DylanCaiCoding/Tracker) 
+[![](https://www.jitpack.io/v/DylanCaiCoding/Tracker.svg)](https://www.jitpack.io/#DylanCaiCoding/Tracker)
 [![](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/Tracker/blob/master/LICENSE)
 
 Tracker is a lightweight tracking framework based on [the tracking idea of Buzzvideo](https://mp.weixin.qq.com/s/iMn--4FNugtH26G90N1MaQ).
@@ -11,13 +11,7 @@ Tracker is a lightweight tracking framework based on [the tracking idea of Buzzv
 
 [Why use chain of responsibility tracking?](https://dylancaicoding.github.io/Tracker/#/zh/idea)
 
-## Sample
-
-This library has Kotlin and Java sample code for simulating Buzzvideo tracking requirements.
-
-## Get started
-
-### Gradle
+## Gradle
 
 Add it in your root build.gradle at the end of repositories:
 
@@ -34,31 +28,17 @@ Add dependencies：
 
 ```groovy
 dependencies {
-    implementation 'com.github.DylanCaiCoding:Tracker:1.0.0'
+    implementation 'com.github.DylanCaiCoding:Tracker:1.0.1'
 }
 ```
 
-### Usage
+## Usage
 
-> See the documentation for [Java usage](https://dylancaicoding.github.io/Tracker/#/zh/usage).
+:pencil: **[>> Usage documentation <<](https://dylancaicoding.github.io/Tracker/#/zh/usage)**
 
-#### Initialization
+## Sample
 
-```kotlin
-initTracker(this, UMTrackHandler())
-```
-
-```kotlin
-class UMTrackHandler : TrackHandler {
-  override fun onEvent(context: Context, eventId: String, params: Map<String, String>) {
-    MobclickAgent.onEvent(context, eventId, params) // Umeng sample
-  }
-}
-```
-
-#### Establish an in-page responsibility chain
-
-Set the `trackNode` for the Activity/Fragment/View to add tracking parameters.
+Set a `trackNode` for the Activity/Fragment/View to add tracking parameters.
 
 ```kotlin
 trackNode = TrackNode("channel_name" to "recommend")
@@ -68,63 +48,32 @@ trackNode = TrackNode("channel_name" to "recommend")
 holder.itemView.trackNode = TrackNode("video_id" to item.id, "video_type" to item.type)
 ```
 
-#### Establish a page source responsibility chain
-
-When starting an activity, you need to call `intent.putReferrerTrackNode(activity/fragment/view)` to set the source node.
+Set a referrer node and a page node to establish a chain of source responsibilities between activity.
 
 ```kotlin
 val intent = Intent(activity, DetailsActivity::class.java).putReferrerTrackNode(view)
 activity.startActivity(intent)
 ```
 
-Then set a `PageTrackNode` in the the activity to establish a chain of source responsibilities between activity.
-
 ```kotlin
-trackNode = PageTrackNode("page_name" to "details")
+activity.trackNode = PageTrackNode("page_name" to "details")
 ```
 
-`PageTrackNode` will add the parameters of all the previous nodes to the page node, and some conversion rules can be set when adding. For example, the 'page_name' of the previous page, after jumping, report 'from_page'.
+This creates a chain of responsibility similar to the one below.
 
-```kotlin
-val referrerKeyMap = mapOf("page_name" to "from_page", "channel_name" to "from_channel_name")
-trackNode = PageTrackNode(referrerKeyMap, "page_name" to "details")
-```
+![image](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e4056fcff5a84c75988f4fa60e7e6ab5~tplv-k3u1fbpfcp-zoom-1.image)
 
-#### Report tracking parameters
-
-Calling `Activity/Fragment/View.postTrack(eventId)` collects parameters through the chain of responsibility and calls back to `TrackHandler`.
+Then it can collect and post the parameters on the responsibility chain through any view.
 
 ```kotlin
 view.postTrack("click_favorite")
 ```
 
-#### Thread node
+This library has Kotlin and Java sample code for simulating Buzzvideo tracking requirements.
 
-In the activity, you can set up a thread node, which can share the tracking parameter between views or pages.
+## Change log
 
-```kotlin
-class RecordTrackNode : TrackNode {
-  var isRecord = false
-
-  override fun fillTackParams(params: TrackParams) {
-    params.put("is_record", it)
-  }
-}
-
-activity.putThreadTrackNode(RecordTrackNode())
-```
-
-You can then update the parameters of the thread node in Activity, Fragment, View.
-
-```kotlin
-view.updateThreadTrackNode<RecordTrackNode> { isRecord = true }
-```
-
-Declare the thread node class when reporting.
-
-```kotlin
-view.postTrack("click_publish", RecordTrackNode::class.java)
-```
+[Releases](https://github.com/DylanCaiCoding/Tracker/releases)
 
 ## Author's other libraries
 

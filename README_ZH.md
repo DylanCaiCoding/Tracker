@@ -2,7 +2,7 @@
 
 [English](https://github.com/DylanCaiCoding/Tracker) | 中文
 
-[![](https://www.jitpack.io/v/DylanCaiCoding/Tracker.svg)](https://www.jitpack.io/#DylanCaiCoding/Tracker) 
+[![](https://www.jitpack.io/v/DylanCaiCoding/Tracker.svg)](https://www.jitpack.io/#DylanCaiCoding/Tracker)
 [![](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/Tracker/blob/master/LICENSE)
 
 Tracker 是基于[西瓜视频的责任链埋点思路](https://mp.weixin.qq.com/s/iMn--4FNugtH26G90N1MaQ)实现的轻量级埋点框架。个人理解其核心思想后进行了改进和优化，最后仅用了 200 多行代码实现，学习成本更低，并且兼顾了 Kotlin 和 Java 用法。
@@ -10,10 +10,6 @@ Tracker 是基于[西瓜视频的责任链埋点思路](https://mp.weixin.qq.com
 ## 埋点思路
 
 [为什么使用责任链的埋点方案？](https://dylancaicoding.github.io/Tracker/#/zh/idea)
-
-## 示例
-
-本库有模拟西瓜视频埋点需求的示例代码，大家可以克隆项目运行 `sample-java` 或 `sample-kotlin`，点击各个位置的收藏按钮查看埋点日志。
 
 ## Gradle
 
@@ -32,7 +28,7 @@ allprojects {
 
 ```groovy
 dependencies {
-    implementation 'com.github.DylanCaiCoding:Tracker:1.0.0'
+    implementation 'com.github.DylanCaiCoding:Tracker:1.0.1'
 }
 ```
 
@@ -42,7 +38,7 @@ dependencies {
 
 ## 示例
 
-给 Activity、Fragment、View 设置埋点节点，通过视图树的层级关系（比如：`Activity -> Fragment -> ViewHolder -> Button`）就能建立节点的上下级责任链关系。
+给 Activity、Fragment、View 设置埋点节点，通过视图树的层级关系（比如：`Activity -> Fragment -> ViewHolder -> Button`）建立节点的上下级责任链关系。
 
 ```kotlin
 trackNode = TrackNode("channel_name" to "recommend")
@@ -52,7 +48,7 @@ trackNode = TrackNode("channel_name" to "recommend")
 holder.itemView.trackNode = TrackNode("video_id" to item.id, "video_type" to item.type)
 ```
 
-通过设置来源节点和页面节点建立页面间的来源关系。
+设置来源节点和页面节点建立页面间的来源关系。
 
 ```kotlin
 val intent = Intent(activity, DetailsActivity::class.java).putReferrerTrackNode(view)
@@ -72,6 +68,12 @@ activity.trackNode = PageTrackNode("page_name" to "details")
 ```kotlin
 view.postTrack("click_favorite")
 ```
+
+本库有模拟西瓜视频埋点需求的示例代码，大家可以克隆项目运行 `sample-java` 或 `sample-kotlin`，点击各个位置的收藏按钮查看埋点日志。
+
+## 更新日志
+
+[Releases](https://github.com/DylanCaiCoding/Tracker/releases)
 
 ## 反馈
 

@@ -4,15 +4,11 @@
 [![](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/Tracker/blob/master/LICENSE)
 [![GitHub Repo stars](https://img.shields.io/github/stars/DylanCaiCoding/Tracker?style=social)](https://github.com/DylanCaiCoding/Tracker)
 
-Tracker 是基于[西瓜视频责任链的埋点思路](https://mp.weixin.qq.com/s/iMn--4FNugtH26G90N1MaQ)实现的轻量级埋点框架。个人理解其核心思想后进行了改进和优化，最后仅用了 200 多行代码实现，学习成本更低，并且兼顾了 Kotlin 和 Java 用法。
+Tracker 是基于[西瓜视频的责任链埋点思路](https://mp.weixin.qq.com/s/iMn--4FNugtH26G90N1MaQ)实现的轻量级埋点框架。个人理解其核心思想后进行了改进和优化，最后仅用了 200 多行代码实现，学习成本更低，并且兼顾了 Kotlin 和 Java 用法。
 
 ## 埋点思路
 
 [为什么使用责任链的埋点方案？](/zh/idea)
-
-## 示例
-
-本库有模拟西瓜视频埋点需求的示例代码，大家可以克隆项目运行 `sample-java` 或 `sample-kotlin`，点击各个位置的收藏按钮查看埋点日志。
 
 ## Gradle
 
@@ -31,9 +27,17 @@ allprojects {
 
 ```groovy
 dependencies {
-    implementation 'com.github.DylanCaiCoding:Tracker:1.0.0'
+    implementation 'com.github.DylanCaiCoding:Tracker:1.0.1'
 }
 ```
+
+## 示例
+
+本库有模拟西瓜视频埋点需求的示例代码，大家可以克隆项目运行 `sample-java` 或 `sample-kotlin`，点击各个位置的收藏按钮查看埋点日志。
+
+## 更新日志
+
+[Releases](https://github.com/DylanCaiCoding/Tracker/releases)
 
 ## 反馈
 

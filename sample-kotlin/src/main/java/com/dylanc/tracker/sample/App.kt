@@ -29,6 +29,6 @@ class App : Application() {
     super.onCreate()
     UMConfigure.setLogEnabled(BuildConfig.DEBUG)
     UMConfigure.preInit(this, UM_APP_ID, UM_CHANNEL)
-    initTracker(this, UMTrackHandler())
+    initTracker(UMTrackHandler())
   }
 }
