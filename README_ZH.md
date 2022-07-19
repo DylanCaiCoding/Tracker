@@ -59,7 +59,7 @@ activity.startActivity(intent)
 activity.trackNode = PageTrackNode("page_name" to "details")
 ```
 
-这样就建立了类似下图的责任链。
+这样就能建立类似下图的责任链。
 
 ![图片](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e4056fcff5a84c75988f4fa60e7e6ab5~tplv-k3u1fbpfcp-zoom-1.image)
 
@@ -69,7 +69,7 @@ activity.trackNode = PageTrackNode("page_name" to "details")
 view.postTrack("click_favorite")
 ```
 
-本库有模拟西瓜视频埋点需求的示例代码，大家可以克隆项目运行 `sample-java` 或 `sample-kotlin`，点击各个位置的收藏按钮查看埋点日志。
+完整的用法请查看[使用文档](https://dylancaicoding.github.io/Tracker/#/zh/usage)。本库有模拟西瓜视频埋点需求的示例代码，大家可以克隆项目运行 `sample-java` 或 `sample-kotlin`，点击各个位置的收藏按钮查看埋点日志。
 
 ## 更新日志
 
