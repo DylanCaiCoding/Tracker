@@ -5,7 +5,7 @@
 [![](https://www.jitpack.io/v/DylanCaiCoding/Tracker.svg)](https://www.jitpack.io/#DylanCaiCoding/Tracker)
 [![](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/Tracker/blob/master/LICENSE)
 
-Tracker 是基于[西瓜视频的责任链埋点思路](https://mp.weixin.qq.com/s/iMn--4FNugtH26G90N1MaQ)实现的轻量级埋点框架。个人理解其核心思想后进行了改进和优化，最后仅用了 200 多行代码实现，学习成本更低，并且兼顾了 Kotlin 和 Java 用法。
+Tracker 是基于[西瓜视频的责任链埋点思路](https://mp.weixin.qq.com/s/iMn--4FNugtH26G90N1MaQ)实现的轻量级埋点框架。个人理解其核心思想后进行了改进和优化，最后仅用了 200 多行代码实现，使用起来更加简单，并且兼顾了 Kotlin 和 Java 用法。
 
 ## 埋点思路
 
@@ -69,7 +69,7 @@ activity.trackNode = PageTrackNode("page_name" to "details")
 view.postTrack("click_favorite")
 ```
 
-完整的用法请查看[使用文档](https://dylancaicoding.github.io/Tracker/#/zh/usage)。本库有模拟西瓜视频埋点需求的示例代码，大家可以克隆项目运行 `sample-java` 或 `sample-kotlin`，点击各个位置的收藏按钮查看埋点日志。
+完整的 Kotlin、Java 用法请[查看使用文档](https://dylancaicoding.github.io/Tracker/#/zh/usage)。本库有模拟西瓜视频埋点需求的示例代码，大家可以克隆项目运行 `sample-java` 或 `sample-kotlin`，点击各个位置的收藏按钮查看埋点日志。
 
 ## 更新日志
 
