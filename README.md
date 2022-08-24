@@ -79,7 +79,7 @@ This library has Kotlin and Java sample code for simulating Buzzvideo tracking r
 
 | Library                                                      | Description                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| [Longan](https://github.com/DylanCaiCoding/Longan)           | A collection of Kotlin utils                                 |
+| [Longan](https://github.com/DylanCaiCoding/Longan)           | Probably the best Kotlin utils library for Android.       |
 | [LoadingStateView](https://github.com/DylanCaiCoding/LoadingStateView) | Decoupling the code of toolbar or loading status view. |
 | [ViewBindingKTX](https://github.com/DylanCaiCoding/ViewBindingKTX) | The most comprehensive utils of ViewBinding.                 |
 | [MMKV-KTX](https://github.com/DylanCaiCoding/MMKV-KTX)       | Use MMKV with property delegates.                                  |
