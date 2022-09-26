@@ -4,6 +4,7 @@ buildscript {
         targetSdkVersion = 30
 
         appcompatVersion = '1.3.1'
+        arouterVersion = '1.5.2'
         constraintLayoutVersion = '2.1.1'
         coreVersion = '1.7.0-alpha01'
         espressoVersion = '3.4.0'
