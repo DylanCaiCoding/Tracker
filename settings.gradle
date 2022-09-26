@@ -1,4 +1,5 @@
 rootProject.name = "Tracker"
-include ':library'
+include ':tracker'
+include ':tracker-arouter'
 include ':sample-kotlin'
 include ':sample-java'

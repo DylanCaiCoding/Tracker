@@ -20,14 +20,21 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import com.dylanc.tracker.postTrack
+import com.dylanc.tracker.putThreadTrackNode
 import com.dylanc.tracker.sample.R
+import com.dylanc.tracker.sample.track.ResultTrackNode
 import com.dylanc.tracker.sample.ui.SignInActivity
+import com.dylanc.tracker.updateThreadTrackNode
 
 class MineFragment : Fragment(R.layout.fragment_mine) {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    activity?.putThreadTrackNode(ResultTrackNode())
     view.findViewById<View>(R.id.btn_sign_in).setOnClickListener {
+      it.updateThreadTrackNode<ResultTrackNode> { result = "test" }
+      it.postTrack("click_test", ResultTrackNode::class.java)
       startActivity(Intent(requireContext(), SignInActivity::class.java))
     }
   }

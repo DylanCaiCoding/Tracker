@@ -22,6 +22,7 @@ package com.dylanc.tracker
 import android.app.Activity
 import android.app.Application
 import android.content.Intent
+import android.os.Bundle
 import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.fragment.app.Fragment
@@ -63,8 +64,15 @@ fun Intent.putReferrerTrackNode(activity: Activity): Intent = putReferrerTrackNo
 
 fun Intent.putReferrerTrackNode(fragment: Fragment): Intent = putReferrerTrackNode(fragment.view)
 
-fun Intent.putReferrerTrackNode(view: View?): Intent = putExtra(KEY_TRACK_PARAMS, view?.collectTrack() as? Serializable)
-  .putExtra(KEY_TRACK_THREAD_NODES, view?.findThreadNodeSet()?.map { it.javaClass.name }?.toTypedArray())
+fun Intent.putReferrerTrackNode(view: View?): Intent = apply {
+  if (extras == null) putExtras(Bundle())
+  extras?.putReferrerTrackNode(view)
+}
+
+fun Bundle.putReferrerTrackNode(view: View?) {
+  putSerializable(KEY_TRACK_PARAMS, view?.collectTrack() as? Serializable)
+  putStringArray(KEY_TRACK_THREAD_NODES, view?.findThreadNodeSet()?.map { it.javaClass.name }?.toTypedArray())
+}
 
 fun Activity.setPageTrackNode(trackNode: TrackNode) = setPageTrackNode(emptyMap(), trackNode)
 
