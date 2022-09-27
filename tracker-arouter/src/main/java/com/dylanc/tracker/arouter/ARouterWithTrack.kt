@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-@file:JvmName("ARouterTracker")
 @file:Suppress("unused")
 
 package com.dylanc.tracker.arouter
@@ -23,14 +22,24 @@ import android.app.Activity
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.facade.Postcard
+import com.alibaba.android.arouter.launcher.ARouter
 import com.dylanc.tracker.putReferrerTrackNode
 
-fun Postcard.putReferrerTrackNode(activity: Activity): Postcard =
-  putReferrerTrackNode(activity.window.decorView)
+object ARouterWithTrack {
 
-fun Postcard.putReferrerTrackNode(fragment: Fragment): Postcard =
-  putReferrerTrackNode(fragment.view)
+  @JvmStatic
+  fun getInstance(): ARouterWithTrack = this
 
-fun Postcard.putReferrerTrackNode(view: View?): Postcard = apply {
-  extras?.putReferrerTrackNode(view)
+  fun build(path: String, activity: Activity): Postcard =
+    ARouter.getInstance().build(path).withReferrerTrackNode(activity.window.decorView)
+
+  fun build(path: String, fragment: Fragment): Postcard =
+    ARouter.getInstance().build(path).withReferrerTrackNode(fragment.view)
+
+  fun build(path: String, view: View?): Postcard =
+    ARouter.getInstance().build(path).withReferrerTrackNode(view)
+
+  private fun Postcard.withReferrerTrackNode(view: View?): Postcard = apply {
+    extras?.putReferrerTrackNode(view)
+  }
 }
