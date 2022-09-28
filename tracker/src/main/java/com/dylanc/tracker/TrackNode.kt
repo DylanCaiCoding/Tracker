@@ -45,3 +45,8 @@ fun Activity.PageTrackNode(referrerKeyMap: Map<String, String> = emptyMap(), tra
     trackNode.fillTackParams(params)
   }
 }
+
+abstract class ThreadTrackNode : TrackNode {
+  @JvmName("removeKey")
+  fun TrackParams.remove(key: String) = internalRemove(key)
+}

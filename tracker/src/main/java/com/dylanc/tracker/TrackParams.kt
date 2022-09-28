@@ -27,5 +27,7 @@ class TrackParams {
 
   fun toMap(): Map<String, String> = map
 
+  internal fun internalRemove(key: String) = apply { map.remove(key) }
+
   override fun toString() = map.toString()
 }
