@@ -65,13 +65,12 @@ fun Intent.putReferrerTrackNode(activity: Activity): Intent = putReferrerTrackNo
 fun Intent.putReferrerTrackNode(fragment: Fragment): Intent = putReferrerTrackNode(fragment.view)
 
 fun Intent.putReferrerTrackNode(view: View?): Intent = apply {
-  if (extras == null) putExtras(Bundle())
-  extras?.putReferrerTrackNode(view)
+  view?.let { putExtras(it.createTrackBundle()) }
 }
 
-fun Bundle.putReferrerTrackNode(view: View?) {
-  putSerializable(KEY_TRACK_PARAMS, view?.collectTrack() as? Serializable)
-  putStringArray(KEY_TRACK_THREAD_NODES, view?.findThreadNodeSet()?.map { it.javaClass.name }?.toTypedArray())
+fun View.createTrackBundle(): Bundle = Bundle().apply {
+  putSerializable(KEY_TRACK_PARAMS, collectTrack() as? Serializable)
+  putStringArray(KEY_TRACK_THREAD_NODES, findThreadNodeSet()?.map { it?.javaClass?.name }?.toTypedArray())
 }
 
 fun Activity.setPageTrackNode(trackNode: TrackNode) = setPageTrackNode(emptyMap(), trackNode)
@@ -97,13 +96,13 @@ fun View.collectTrack(vararg classes: Class<*>): Map<String, String> {
     view = view.parent as? View
   }
   nodeList.reversed().forEach { node -> node.fillTackParams(params) }
-  findThreadNodeSet()?.filter { node -> classes.any { node.javaClass.name == it.name } }
-    ?.forEach { node -> node.fillTackParams(params) }
+  findThreadNodeSet()?.filter { node -> classes.any { node?.javaClass?.name == it.name } }
+    ?.forEach { node -> node?.fillTackParams(params) }
   return params.toMap()
 }
 
 fun ComponentActivity.putThreadTrackNode(trackNode: TrackNode) {
-  val threadNodeSet = window.decorView.getTag(R.id.tag_thread_nodes) as? MutableSet<TrackNode> ?: mutableSetOf()
+  val threadNodeSet = HashSet((window.decorView.getTag(R.id.tag_thread_nodes) as? Set<TrackNode?>).orEmpty())
   threadNodeSet.add(trackNode)
   window.decorView.setTag(R.id.tag_thread_nodes, threadNodeSet)
   allThreadNodes[trackNode.javaClass.name] = trackNode
@@ -130,12 +129,12 @@ inline fun <reified T : TrackNode> View.updateThreadTrackNode(callback: Callback
   updateThreadTrackNode(T::class.java, callback)
 
 fun <T : TrackNode> View.updateThreadTrackNode(clazz: Class<T>, callback: Callback<T>) =
-  findThreadNodeSet()?.find { it.javaClass.name == clazz.name }?.let {
+  findThreadNodeSet()?.find { it?.javaClass?.name == clazz.name }?.let {
     callback.apply { (it as? T)?.onUpdate() }
   }
 
-private fun View.findThreadNodeSet(): Set<TrackNode>? =
-  getTag(R.id.tag_thread_nodes) as? Set<TrackNode> ?: (parent as? View)?.findThreadNodeSet()
+private fun View.findThreadNodeSet(): Set<TrackNode?>? =
+  getTag(R.id.tag_thread_nodes) as? Set<TrackNode?> ?: (parent as? View)?.findThreadNodeSet()
 
 fun interface Callback<T : TrackNode> {
   fun T.onUpdate()

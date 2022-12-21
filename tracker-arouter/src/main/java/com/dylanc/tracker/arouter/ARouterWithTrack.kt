@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+@file:Suppress("unused", "MemberVisibilityCanBePrivate")
 
 package com.dylanc.tracker.arouter
 
@@ -23,7 +23,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.facade.Postcard
 import com.alibaba.android.arouter.launcher.ARouter
-import com.dylanc.tracker.putReferrerTrackNode
+import com.dylanc.tracker.*
 
 object ARouterWithTrack {
 
@@ -39,7 +39,13 @@ object ARouterWithTrack {
   fun build(path: String, view: View?): Postcard =
     ARouter.getInstance().build(path).withReferrerTrackNode(view)
 
-  private fun Postcard.withReferrerTrackNode(view: View?): Postcard = apply {
-    extras?.putReferrerTrackNode(view)
+  fun Postcard.withReferrerTrackNode(activity: Activity): Postcard =
+    withReferrerTrackNode(activity.window.decorView)
+
+  fun Postcard.withReferrerTrackNode(fragment: Fragment): Postcard =
+    withReferrerTrackNode(fragment.view)
+
+  fun Postcard.withReferrerTrackNode(view: View?): Postcard = apply {
+    view?.let { extras?.putAll(it.createTrackBundle()) }
   }
 }
